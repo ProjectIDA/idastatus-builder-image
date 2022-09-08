@@ -1,0 +1,52 @@
+
+version: 2.1
+orbs:
+  slack: circleci/slack@4.0.0
+jobs:
+  build:
+    docker:    
+      - image: cimg/python:3.9
+        environment:
+          PACKER_VER: 1.8.0
+    steps:
+      - run:
+          name: Install unzip
+          command: sudo apt-get install -y unzip
+      - checkout
+      - run:
+          name: Install packer
+          command: |
+            python --version
+            curl -L -o /tmp/packer-${PACKER_VER}.zip https://releases.hashicorp.com/packer/${PACKER_VER}/packer_${PACKER_VER}_linux_amd64.zip
+            unzip /tmp/packer-${PACKER_VER}.zip -d /tmp/packer
+            sudo mv /tmp/packer/* /usr/local/
+      - run:
+          name: apt-get Update
+          command: sudo apt-get update
+      - run:
+          name: Install software-properties-common
+          command: sudo apt-get install software-properties-common
+      - run:
+          name: install ansible apt-get repo
+          command: sudo apt-add-repository --yes ppa:ansible/ansible
+      - run:
+          name: Install Ansible
+          command: sudo apt-get install ansible
+      - run:
+          name: check ansible version
+          command: ansible-playbook --version
+      - add_ssh_keys:
+          fingerprints:
+            - "46:c3:58:83:04:93:90:8f:a4:1f:e3:8f:56:70:a4:d8"
+      - run:
+          name: look for keys
+          command: ls -l ~/.ssh/
+      - run: 
+          name: Validate aws ami config
+          command: /usr/local/packer validate  -var "AWSKEY=${aws_access_key_id}" -var "AWSSECRET=${aws_secret_access_key}" build-nrts-hub-ec2-ami.json
+      - run:
+          name: Build aws ami image
+          command: /usr/local/packer build -var "AWSKEY=${aws_access_key_id}" -var "AWSSECRET=${aws_secret_access_key}" build-nrts-hub-ec2-ami.json 
+
+
+#          "owners": ["863634277693"],
