@@ -1,0 +1,33 @@
+{
+  "builders": [{
+    "type": "docker",
+    "image": "amazonlinux:2",
+    "commit": "true"
+  }],
+ "provisioners": [
+    {
+      "type": "ansible",
+      "playbook_file": "prov-idastatus-builder-image.yml"
+    }
+  ],
+  "post-processors": [
+    [
+      {
+        "type": "docker-tag",
+        "repository": "projectida/idastatus-builder-image",
+        "tag": "{{user `IMAGETAG`}}"
+      },
+      {
+        "type": "docker-tag",
+        "repository": "projectida/idastatus-builder-image",
+        "tag": "latest"
+      },
+      {
+        "type": "docker-push",
+        "login": true,
+        "login_username": "sbargy",
+        "login_password": "{{user `DOCKERPW`}}"
+      }
+    ]
+  ]
+}
