@@ -1,0 +1,25 @@
+---
+- name: Provision AMI image with IDA STATUS
+  remote_user: ec2-user
+  hosts: default
+  vars:
+    target_major_version: "{{ ansible_facts['distribution_major_version'] }}"
+    target_family: "{{ ansible_facts['os_family']|lower }}"
+    target: "{{ target_family }}{{ target_major_version }}"
+
+  tasks:
+    - debug:
+        msg: "home_location: {{ home_location }}"
+
+    - debug:
+        msg: "git_branch: {{ git_branch }}"
+
+    - import_role:
+        name: idastatus-base
+      vars:
+        idastatus_src_version: ""  # currently unused, but should in future, pull from github "release" version
+        system_hostname: idastatus
+        home_root: "{{ home_location }}"
+        idastatus_home_dir : "{{ home_location }}/idadcc" # NOTE need to verify this
+        git_src_branch: "{{ git_branch }}"
+
