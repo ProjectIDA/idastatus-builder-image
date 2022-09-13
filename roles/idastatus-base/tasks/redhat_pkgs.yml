@@ -1,0 +1,57 @@
+# os_family == 'redhat' SYSTEM SPECIFIC
+- name: Enable EPEL repo on AWS EC2 Amazon Linux 2 Instances
+  shell: |
+    amazon-linux-extras install epel -y
+  when: is_ec2
+  become: true
+
+- name: Enable EPEL repo on Centos 7 OSes
+  yum:
+    name: epel-release
+    # baseurl: https://download.fedoraproject.org/pub/epel/$releasever/$basearch/
+  when: not cloudstat.stat.isdir is defined and ansible_facts['os_family'] == "RedHat"
+  become: true
+
+- name: install system pkgs
+  yum:
+    name: "{{ pkgs }}"
+    state: latest
+    update_cache: yes
+  become: true
+  vars:
+    pkgs: 
+      - openssh
+      - make
+      - zlib-devel
+      - wget
+      - gcc
+      - ncurses-devel
+      - libxml2-devel
+      - tcsh
+      - vim
+  #    - ntp
+      - chrony
+      - git
+      - lsof
+      - man-pages
+      # - https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+      - iftop
+      - xorriso
+      - tree
+      - golang
+      - net-snmp
+      - unzip
+      - jq
+  tags:
+    base
+#    - epel-release
+# xorriso really only for centos 7.7+, but need to get rid of ISOs all together.
+
+- name: remove system pkgs
+  yum:
+    name: "{{ pkgs }}"
+    state: absent
+  become: true
+  vars:
+    pkgs: 
+      - ntpd
