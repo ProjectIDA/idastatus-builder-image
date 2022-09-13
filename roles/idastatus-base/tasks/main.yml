@@ -388,13 +388,13 @@
     #    mode: 0644
     #    backup: yes
     #  become: true
-
-- name: install vim-plug
-  ansible.builtin.shell: curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  become_user: nrts
-  become: yes
-
-- name: install vim plugins
-  ansible.builtin.shell: vim +'PlugInstall --sync' +qa
-  become_user: nrts
-  become: yes
+    #
+    #- name: install vim-plug
+    #  ansible.builtin.shell: curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    #  become_user: nrts
+    #  become: yes
+    #
+    #- name: install vim plugins
+    #  ansible.builtin.shell: vim +'PlugInstall --sync' +qa
+    #  become_user: nrts
+    #  become: yes
