@@ -208,20 +208,26 @@
 #   tags:
 #     - usermods
 ####################################################################
-- name: Create LOCAL NRTS Group with (guid=4000)
-  ansible.builtin.group:
-    name: nrts
-    state: present
-    gid: 4000
-    local: yes
-  become: yes
-  tags:
-    - usermods
+#
+# Removed for idastatus-builder
+#
+#- name: Create LOCAL NRTS Group with (guid=4000)
+#  ansible.builtin.group:
+#    name: nrts
+#    state: present
+#    gid: 4000
+#    local: yes
+#  become: yes
+#  tags:
+#    - usermods
 
 ####################################
 # Generate password with python:
 #   python3 -c "from passlib.hash import sha512_crypt; import getpass; print(sha512_crypt.using(rounds=5000).hash(getpass.getpass()))"
 ####################################################################
+#
+# Removed for idastatus-builder
+#
 - name: Create LOCAL user NRTS
   ansible.builtin.user:
     name: nrts
@@ -258,6 +264,9 @@
 #   tags:
 #     - usermods
 
+#
+# Removed for idastatus-builder
+#
 - name: Create LOCAL user TUNNEL
   ansible.builtin.user:
     name: tunnel
@@ -287,62 +296,68 @@
 #     - usermods
 ####################################################################
 
+#
+# Removed for idastatus-builder
+#
 # requires nrts_home_dir
-- name: Set mode on NRTS home dir
-  file:
-    name: "{{ nrts_home_dir }}"
-    state: directory
-    mode: 02755
-    owner: nrts
-    group: nrts
-  become: yes
-  tags:
-    - usermods
+#- name: Set mode on NRTS home dir
+#  file:
+#    name: "{{ nrts_home_dir }}"
+#    state: directory
+#    mode: 02755
+#    owner: nrts
+#    group: nrts
+#  become: yes
+#  tags:
+#    - usermods
 
+#
+# Removed for idastatus-builder
+#
 # requires nrts_home_dir
-- name: install custom nrts sudoers conf file
-  template:
-    src: nrts-sudoers.{{ ansible_facts['os_family']|lower }}.j2
-    dest: /etc/sudoers.d/nrts
-    owner: root
-    group: root
-    mode: 0644
-    backup: yes
-  become: true
-
-- name: update perms on homedirs
-  file:
-    path: "{{ home_root }}/{{ item }}"
-    state: directory
-    owner: "{{ item }}"
-    group: "{{ item }}"
-    mode: "g+rx"
-  become: true
-  tags:
-    nrtsbuild
-  loop:
-    - nrts
-    - tunnel
-
-# requires nrts_home_dir 
-# MAY NEED TO CUSTOMIZE FOR DEBIAN
-- name: install custom NRTS rsyslog conf
-  template:
-    src: nrts-rsyslog.j2
-    dest: /etc/rsyslog.d/nrts.conf
-    owner: root
-    group: root
-    mode: 0644
-    backup: yes
-  become: true
-
-# MAY NEED TO CUSTOMIZE FOR DEBIAN
-- name: make sure rsyslogd running and enabled with nrts custom conf
-  systemd:
-    name: rsyslog
-    state: restarted
-    enabled: yes
-  become: true
+#- name: install custom nrts sudoers conf file
+#  template:
+#    src: nrts-sudoers.{{ ansible_facts['os_family']|lower }}.j2
+#    dest: /etc/sudoers.d/nrts
+#    owner: root
+#    group: root
+#    mode: 0644
+#    backup: yes
+#  become: true
+#
+#- name: update perms on homedirs
+#  file:
+#    path: "{{ home_root }}/{{ item }}"
+#    state: directory
+#    owner: "{{ item }}"
+#    group: "{{ item }}"
+#    mode: "g+rx"
+#  become: true
+#  tags:
+#    nrtsbuild
+#  loop:
+#    - nrts
+#    - tunnel
+#
+## requires nrts_home_dir 
+## MAY NEED TO CUSTOMIZE FOR DEBIAN
+#- name: install custom NRTS rsyslog conf
+#  template:
+#    src: nrts-rsyslog.j2
+#    dest: /etc/rsyslog.d/nrts.conf
+#    owner: root
+#    group: root
+#    mode: 0644
+#    backup: yes
+#  become: true
+#
+## MAY NEED TO CUSTOMIZE FOR DEBIAN
+#- name: make sure rsyslogd running and enabled with nrts custom conf
+#  systemd:
+#    name: rsyslog
+#    state: restarted
+#    enabled: yes
+#  become: true
 
 #These are not needed for the idastatus builder
     #- name: build nrts software
