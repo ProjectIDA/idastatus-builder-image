@@ -2,7 +2,7 @@
     "variables": {
         "aws_access_key": "{{user `AWSKEY`}}",
         "aws_secret_key": "{{user `AWSSECRET`}}",
-        "ami_name": "ida-nrts-hub",
+        "ami_name": "idastatus",
         "aws_region": "us-west-2",
         "ssh_username": "ec2-user",
         "vpc_id": "vpc-7be41303",
@@ -13,7 +13,7 @@
         "access_key": "{{user `aws_access_key`}}",
         "secret_key": "{{user `aws_secret_key`}}",
         "region": "{{user `aws_region`}}",
-        "instance_type": "t3.large",
+        "instance_type": "t3.medium",
         "force_deregister": "true",
         "ssh_username": "{{user `ssh_username`}}",
         "communicator": "ssh",
@@ -31,7 +31,7 @@
             "most_recent": true
         },
         "run_tags": {
-            "Name": "packer-build-image"
+            "Name": "packer-idastatus-build-image"
         }
     }],
     "provisioners": [{
