@@ -344,34 +344,35 @@
     enabled: yes
   become: true
 
-- name: build nrts software
-  import_tasks: nrtsbuild.yml
-  vars:
-    build_root: "{{ nrts_home_dir }}"
-    deploy_root: "{{ nrts_home_dir }}"
-  become: true
-  tags:
-    nrtsbuild
-
-- name: build 3rd party (IRIS) miniseed utilities
-  import_tasks: miniseed_utils.yml
-  vars:
-    build_root: "/usr/local/src"
-    deploy_root: "/usr/local/bin"
-    ringserver_location: "{{ nrts_home_dir }}"
-  tags:
-    - miniseed
-
-# requires nrts_home_dir 
-- name: set NRTS_HOME in systemd nrts.service file and install
-  template:
-    src: nrts.service_template.j2
-    dest: /etc/systemd/system/nrts.service
-    owner: root
-    group: root
-    mode: 0644
-    backup: yes
-  become: true
+#These are not needed for the idastatus builder
+    #- name: build nrts software
+    #  import_tasks: nrtsbuild.yml
+    #  vars:
+    #    build_root: "{{ nrts_home_dir }}"
+    #    deploy_root: "{{ nrts_home_dir }}"
+    #  become: true
+    #  tags:
+    #    nrtsbuild
+    #
+    #- name: build 3rd party (IRIS) miniseed utilities
+    #  import_tasks: miniseed_utils.yml
+    #  vars:
+    #    build_root: "/usr/local/src"
+    #    deploy_root: "/usr/local/bin"
+    #    ringserver_location: "{{ nrts_home_dir }}"
+    #  tags:
+    #    - miniseed
+    #
+    ## requires nrts_home_dir 
+    #- name: set NRTS_HOME in systemd nrts.service file and install
+    #  template:
+    #    src: nrts.service_template.j2
+    #    dest: /etc/systemd/system/nrts.service
+    #    owner: root
+    #    group: root
+    #    mode: 0644
+    #    backup: yes
+    #  become: true
 
 - name: install vim-plug
   ansible.builtin.shell: curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
