@@ -267,20 +267,20 @@
 #
 # Removed for idastatus-builder
 #
-- name: Create LOCAL user TUNNEL
-  ansible.builtin.user:
-    name: tunnel
-    local: yes
-    password: '$6$2HD/LDqZQW8pofXt$Frj9Fos6VJBT12e/NTeyd3kQdEGH4drWDSBETxx2OifFk215rBr9Ta0xdHcER.O.u/aQ3xI.OXaDZbBkxpeIy0'
-    state: present
-    home: "{{ home_root }}/tunnel"
-    groups: nrts
-    shell: /sbin/nologin
-    generate_ssh_key: yes
-  become: yes
-  tags:
-    - usermods
-
+#- name: Create LOCAL user TUNNEL
+#  ansible.builtin.user:
+#    name: tunnel
+#    local: yes
+#    password: '$6$2HD/LDqZQW8pofXt$Frj9Fos6VJBT12e/NTeyd3kQdEGH4drWDSBETxx2OifFk215rBr9Ta0xdHcER.O.u/aQ3xI.OXaDZbBkxpeIy0'
+#    state: present
+#    home: "{{ home_root }}/tunnel"
+#    groups: nrts
+#    shell: /sbin/nologin
+#    generate_ssh_key: yes
+#  become: yes
+#  tags:
+#    - usermods
+#
 
 ####################################################################
 # need to do some shenanigans manually due to OD users and groups
