@@ -244,6 +244,22 @@
 #    - usermods
 #
 
+- name: Create LOCAL user idadcc
+  ansible.builtin.user:
+    name: idadcc
+    local: yes
+    uid: 4001
+    group: idadcc
+    home: "{{ nrts_home_dir }}"
+    shell: /usr/bin/bash
+    password: '$6$KyShOWI0CsxklBEm$.gyA9ZRzjIdwDJ27C1QnjR40eiCLr3HBdJa/sxLZdqAIrgmKGxBIn.t4.lyFHjzebz6uT6e/Rf4PRoczhHm950'
+    generate_ssh_key: yes
+    state: present
+  become: yes
+  tags:
+    - usermods
+
+
 # - name: Create LOCAL user NRTS
 #   shell: |
 #     luseradd -u 4000 -d {{ nrts_home_dir }} -s /bin/tcsh -p '$6$xyyuDEOrBdwBfx.4$e0.4QB8TQk4eyWk6KiCgSIgFSIgozR7K0W0.9XyyV14fBRsWhWrxaMjrRP12/ZT6FiCkdTpWoeyVHV4apazw00' nrts
