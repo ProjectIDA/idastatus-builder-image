@@ -250,7 +250,7 @@
     local: yes
     uid: 4001
     group: idadcc
-    home: "{{ nrts_home_dir }}"
+    home: "{{ home_location }}/idadcc"
     shell: /usr/bin/bash
     password: '$6$KyShOWI0CsxklBEm$.gyA9ZRzjIdwDJ27C1QnjR40eiCLr3HBdJa/sxLZdqAIrgmKGxBIn.t4.lyFHjzebz6uT6e/Rf4PRoczhHm950'
     generate_ssh_key: yes
