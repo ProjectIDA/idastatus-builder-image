@@ -262,7 +262,7 @@
     group: idadcc
     home: "{{ home_location }}/idadcc"
     shell: /usr/bin/bash
-    password: '$6$KyShOWI0CsxklBEm$.gyA9ZRzjIdwDJ27C1QnjR40eiCLr3HBdJa/sxLZdqAIrgmKGxBIn.t4.lyFHjzebz6uT6e/Rf4PRoczhHm950'
+    password: '$6$agyXOv6Ybw4Smau1$DocCmQk6YiFrG8UlCjJGhC472cnBp2h.uy91oqgQjXlJvbgNk88Y3SOCxOII6l4HKAEsXCPewgMgJgXiNiaD5/'
     generate_ssh_key: yes
     state: present
   become: yes
