@@ -192,21 +192,21 @@ tags:
 - packages
 become: true
 
-          #      - name: set python3 to point to python3.9 and reset to selected
-          #        community.general.alternatives:
-          #          name: python3
-          #          path: "/usr/bin/python{{ python_minor_version }}"
-          #          link: /usr/bin/python3
-          #          state: selected
-          #        tags:
-          #        - python_alternatives
-          #        become: true
-          #
-          #      - name: Directory for download of source must exist
-          #        file:
-          #          path: "{{ src_dir }}"
-          #          state: directory
-          #        become: true
+#      - name: set python3 to point to python3.9 and reset to selected
+#        community.general.alternatives:
+#          name: python3
+#          path: "/usr/bin/python{{ python_minor_version }}"
+#          link: /usr/bin/python3
+#          state: selected
+#        tags:
+#        - python_alternatives
+#        become: true
+#
+#      - name: Directory for download of source must exist
+#        file:
+#          path: "{{ src_dir }}"
+#          state: directory
+#        become: true
 
 
 # we are no longer building/installing Tk/Tcl, PyQt4, Python, or SIP.  We are installing an updated python 
@@ -287,576 +287,175 @@ become: true
       #        - long_pyqt4
       #        become: true
 
-      # Python modules section
-      # Get pip installed first
-      - name: install pip3 module
-        pip:
-          executable: "{{ pip_executable_target }}"
-          extra_args: "--no-cache-dir"
-          name: 
-              - pip
-        tags:
-        - pythonmodules
+Python modules section
+Get pip installed first
+name: install pip3 module
+pip:
+  executable: "{{ pip_executable_target }}"
+  extra_args: "--no-cache-dir"
+  name: 
+      - pip
+tags:
+- pythonmodules
 
-      - name: pip self-update
-        pip:
-          name: pip
-          state: latest
-        tags:
-        - pythonmodules
-        become: true
+name: pip self-update
+pip:
+  name: pip
+  state: latest
+tags:
+- pythonmodules
+become: true
 
-      # For some reason, obspy likes numpy to be installed
-      - name: install numpy module
-        pip:
-          executable: "{{ pip_executable_target }}"
-          extra_args: "--no-cache-dir"
-          name: 
-              - numpy
-        tags:
-        - pythonmodules
+For some reason, obspy likes numpy to be installed
+name: install numpy module
+pip:
+  executable: "{{ pip_executable_target }}"
+  extra_args: "--no-cache-dir"
+  name: 
+      - numpy
+tags:
+- pythonmodules
 
-      # now that Python is installed, we can install our modules
-      - name: install Python modules
-        pip:
-          executable: "{{ pip_executable_target }}"
-          extra_args: "--no-cache-dir"
-          name: 
-             # - dynd # skip for now
-              - basemap
-              - boto3
-              - obspy
-              - dask
-              - tables
-              - toolz
-              - pycurl
-              - path.py
-              - ruamel-yaml
-              - alabaster
-              - argcomplete
-              - argh
-              - astropy
-              - awscli
-              - Babel
-              - beautifulsoup4
-              - bitarray
-              - blaze
-              - bokeh
-              - boto
-              - botocore
-              - Bottleneck
-              - cffi
-              - chest
-              - cloudpickle
-              - clyent
-              - colorama
-              - configobj
-              - cryptography
-              - Cython
-              - cytoolz
-              - datashape
-              - dill
-              - docutils
-              - et-xmlfile
-              - fabulous
-              - fastcache
-              - flake8
-              - Flask
-              - Flask-Cors
-              - gevent
-              - gitdb2
-              - GitPython
-              - greenlet
-              - h5py
-              - HeapDict
-              - ipykernel
-              - ipython
-              - ipython-genutils
-              - ipywidgets
-              - itsdangerous
-              - jdcal
-              - jedi
-              - Jinja2
-              - jmespath
-              - jsonschema
-              - jupyter
-              - jupyter-client
-              - jupyter-console
-              - jupyter-core
-              - llvmlite
-              - locket
-              - MarkupSafe
-              - mccabe
-              - mistune
-              - mpmath
-              - multipledispatch
-              - nbconvert
-              - nbformat
-              - networkx
-              - nltk
-              - nose
-              - notebook
-              - numba
-              - numexpr
-              - odo
-              - openpyxl
-              - pandas
-              - partd
-              - pathtools
-              - patsy
-              - pep8
-              #- pexpect
-              - pick
-              - pickleshare
-              - Pillow
-              - ply
-              - psutil
-              - ptyprocess
-              - py
-              - pyasn1
-              - pycosat
-              - pycparser
-              - pycrypto
-              - pyflakes
-              - Pygments
-              - pyOpenSSL
-              - pyproj
-              - pytest
-              - pytz
-              - pyweed
-              - PyYAML
-              - pyzmq
-              - QtAwesome
-              - qtconsole
-              - QtPy
-              - redis
-              - rope-py3k
-              - rsa
-              - s3transfer
-              - scikit-image
-              - scikit-learn
-              - simplegeneric
-              - singledispatch
-              - smmap2
-              - snowballstemmer
-              - sockjs-tornado
-              - Sphinx
-              - sphinx-rtd-theme
-              - spyder
-              - statsmodels
-              - sympy
-              - terminado
-              - tornado
-              - traitlets
-              - unicodecsv
-              - Werkzeug
-              - xlrd
-              - XlsxWriter
-              - xlwt
-        tags:
-        - pythonmodules
-        become: true
-
-          #      ###### miniseed2dmc section #########################
-          #      - name: get IRIS repo miniseed2dmc
-          #        git:
-          #            repo: 'https://github.com/iris-edu/miniseed2dmc.git'
-          #            dest: '{{ src_dir }}/miniseed2dmc'
-          #        tags:
-          #        - irissoftware
-          #        become: true
-          #
-          #      - name: make miniseed2dmc
-          #        make:
-          #            chdir: '{{ src_dir }}/miniseed2dmc'
-          #            target: 'all'
-          #        tags:
-          #        - irissoftware
-          #        become: true
-          #
-          #      - name: install miniseed2dmc
-          #        copy:
-          #            src: '{{ src_dir }}/miniseed2dmc/miniseed2dmc'
-          #            dest: '{{ local_bin_dir }}/miniseed2dmc'
-          #            remote_src: 'yes'
-          #            owner: root
-          #            group: root
-          #            mode: 0755
-          #        tags:
-          #        - irissoftware
-          #        become: true
-          #
-          #      ###### msi section #########################
-          #      - name: get IRIS repo msi
-          #        git:
-          #            repo: 'https://github.com/iris-edu/msi.git'
-          #            dest: '{{ src_dir }}/msi'
-          #        tags:
-          #        - irissoftware
-          #        become: true
-          #
-          #      - name: make msi
-          #        make:
-          #            chdir: '{{ src_dir }}/msi'
-          #            target: 'all'
-          #        tags:
-          #        - irissoftware
-          #        become: true
-          #
-          #      - name: install msi
-          #        copy:
-          #            src: '{{ src_dir }}/msi/msi'
-          #            dest: '{{ local_bin_dir }}/msi'
-          #            remote_src: 'yes'
-          #            owner: root
-          #            group: root
-          #            mode: 0755
-          #        tags:
-          #        - irissoftware
-          #        become: true
-          #
-          #      ###### slinktool section #########################
-          #      - name: get IRIS repo slinktool
-          #        git:
-          #            repo: 'https://github.com/iris-edu/slinktool.git'
-          #            dest: '{{ src_dir }}/slinktool'
-          #            force: 'yes'
-          #        tags:
-          #        - irissoftware
-          #        become: true
-          #
-          #      - name: Update CFLAGS in one Makefile
-          #        lineinfile:
-          #          dest: '{{ src_dir }}/slinktool/ezxml/Makefile'
-          #          line: 'CFLAGS = -std=c99'
-          #          state: present
-          #          insertafter: '^LIB_A = '
-          #        tags:
-          #        - irissoftware
-          #        become: true
-          #
-          #      - name: make slinktool
-          #        make:
-          #            chdir: '{{ src_dir }}/slinktool'
-          #            target: 'all'
-          #        tags:
-          #        - irissoftware
-          #        become: true
-          #
-          #      - name: install slinktool
-          #        copy:
-          #            src: '{{ src_dir }}/slinktool/slinktool'
-          #            dest: '{{ local_bin_dir }}/slinktool'
-          #            remote_src: 'yes'
-          #            owner: root
-          #            group: root
-          #            mode: 0755
-          #        tags:
-          #        - irissoftware
-          #        become: true
-          #
-          #      ###### sac2mseed section #########################
-          #      - name: get IRIS repo sac2mseed
-          #        git:
-          #            repo: 'https://github.com/iris-edu/sac2mseed.git'
-          #            dest: '{{ src_dir }}/sac2mseed'
-          #        tags:
-          #        - irissoftware
-          #        become: true
-          #
-          #      - name: make sac2mseed
-          #        make:
-          #            chdir: '{{ src_dir }}/sac2mseed'
-          #            target: 'all'
-          #        tags:
-          #        - irissoftware
-          #        become: true
-          #
-          #      - name: install sac2mseed
-          #        copy:
-          #            src: '{{ src_dir }}/sac2mseed/sac2mseed'
-          #            dest: '{{ local_bin_dir }}/sac2mseed'
-          #            remote_src: 'yes'
-          #            owner: root
-          #            group: root
-          #            mode: 0755
-          #        tags:
-          #        - irissoftware
-          #        become: true
-          #
-          #      ###### dataselect section #########################
-          #      - name: get IRIS repo dataselect
-          #        git:
-          #            repo: 'https://github.com/iris-edu/dataselect.git'
-          #            dest: '{{ src_dir }}/dataselect'
-          #        tags:
-          #        - irissoftware
-          #        become: true
-          #
-          #      - name: make dataselect
-          #        make:
-          #            chdir: '{{ src_dir }}/dataselect'
-          #            target: 'all'
-          #        tags:
-          #        - irissoftware
-          #        become: true
-          #
-          #      - name: install dataselect
-          #        copy:
-          #            src: '{{ src_dir }}/dataselect/dataselect'
-          #            dest: '{{ local_bin_dir }}/dataselect'
-          #            remote_src: 'yes'
-          #            owner: root
-          #            group: root
-          #            mode: 0755
-          #        tags:
-          #        - irissoftware
-          #        become: true
-          #
-          #      ###### evalresp section #########################
-          #      - name: get, make, and install evalresp from IRIS
-          #        shell: |
-          #            cd "{{ src_dir }}"
-          #            wget -nc https://github.com/iris-edu/evalresp/archive/refs/tags/v5.0.1.tar.gz
-          #            tar xzf v5.0.1.tar.gz
-          #            cd evalresp-5.0.1
-          #            ./configure
-          #            make
-          #            make install
-          #        tags:
-          #        - irissoftware
-          #        become: true
-          #
-          #      ###### msmod section #########################
-          #      - name: get, make, and install msmod from IRIS
-          #        shell: |
-          #            cd "{{ src_dir }}"
-          #            wget --no-check-certificate -nc https://seiscode.iris.washington.edu/attachments/download/1302/msmod-1.2.tar.gz
-          #            tar xzf msmod-1.2.tar.gz
-          #            cd msmod-1.2
-          #            ./configure
-          #            make
-          #            make install
-          #        tags:
-          #        - irissoftware
-          #        become: true
-          #
-          #      ###### pod section #########################
-          #      - name: get and unpack pod from IRIS
-          #        shell: |
-          #            cd "{{ src_dir }}"
-          #            wget -nc http://ds.iris.edu/pub/programs/podv5.6.tar.gz
-          #            tar xzf podv5.6.tar.gz
-          #        tags:
-          #        - irissoftware
-          #        become: true
-          #
-          #      - name: update usage.c with include
-          #        lineinfile:
-          #          dest: '{{ src_dir }}/5.6/Main/usage.c'
-          #          line: '#include "stdio.h"'
-          #          state: present
-          #          insertafter: '#include "date.h"'
-          #        tags:
-          #        - irissoftware
-          #        become: true
-          #
-          #      - name: make pod from IRIS
-          #        shell: |
-          #            cd "{{ src_dir }}/5.6"
-          #            make
-          #        tags:
-          #        - irissoftware
-          #        become: true
-          #
-          #      - name: install pod
-          #        copy:
-          #            src: '{{ src_dir }}/5.6/pod'
-          #            dest: '{{ local_bin_dir }}/pod'
-          #            remote_src: 'yes'
-          #            owner: root
-          #            group: root
-          #            mode: 0755
-          #        tags:
-          #        - irissoftware
-          #        become: true
-          #
-          #
-          #### NOTE!!! ###
-          ## Do to a build problem with the xdr libraries, we are removing the rdseed package from
-          ## this install.  We may need to deal with this in the future
-          #### NOTE!!! ###
-          #
-          #          #      ###### rdseed section #########################
-          #          #      - name: get and unpack rdseed from IRIS
-          #          #        shell: |
-          #          #            cd "{{ src_dir }}"
-          #          #            wget -nc http://ds.iris.edu/pub/programs/rdseedv5.3.1.tar.gz
-          #          #            tar xzf rdseedv5.3.1.tar.gz
-          #          #        tags:
-          #          #        - irissoftware
-          #          #        become: true
-          #          #
-          #          #      - name: uncomment the Linux LDFLAGS line
-          #          #        lineinfile:
-          #          #            path: '{{ src_dir }}/rdseedv5.3.1/Makefile'
-          #          #            regexp: '^#LDFLAGS = -lm -lc'
-          #          #            line: 'LDFLAGS = -lm -lc'
-          #          #            owner: root
-          #          #            group: root
-          #          #            mode: 0644
-          #          #        tags:
-          #          #        - irissoftware
-          #          #        become: true
-          #          #
-          #          #      - name: comment out the Solaris LDFLAGS line
-          #          #        lineinfile:
-          #          #            path: '{{ src_dir }}/rdseedv5.3.1/Makefile'
-          #          #            regexp: '^LDFLAGS = -lm -lc -lnsl'
-          #          #            line: '#LDFLAGS = -lm -lc -lnsl'
-          #          #            owner: root
-          #          #            group: root
-          #          #            mode: 0644
-          #          #        tags:
-          #          #        - irissoftware
-          #          #        become: true
-          #          #
-          #          #      - name:  make rdseed from IRIS
-          #          #        shell: |
-          #          #            cd "{{ src_dir }}/rdseedv5.3.1"
-          #          #            make
-          #          #        tags:
-          #          #        - irissoftware
-          #          #        become: true
-          #          #
-          #          #      - name: install rdseed
-          #          #        copy:
-          #          #            src: '{{ src_dir }}/rdseedv5.3.1/rdseed'
-          #          #            dest: '{{ local_bin_dir }}/rdseed'
-          #          #            remote_src: 'yes'
-          #          #            owner: root
-          #          #            group: root
-          #          #            mode: 0755
-          #          #        tags:
-          #          #        - irissoftware
-          #          #        become: true
-          #
-          #      ##### verseed section #########################
-          #      - name: get and unpack verseed from IRIS
-          #        shell: |
-          #            cd "{{ src_dir }}"
-          #            wget -nc http://ds.iris.edu/pub/programs/verseed.2.6.tar.gz
-          #            tar xzf verseed.2.6.tar.gz
-          #        tags:
-          #        - irissoftware
-          #        become: true
-          #
-          #      - name:  make verseed from IRIS
-          #        shell: |
-          #            cd "{{ src_dir }}/verseed.2.6"
-          #            make
-          #        tags:
-          #        - irissoftware
-          #        become: true
-          #
-          #      - name: install verseed
-          #        copy:
-          #            src: '{{ src_dir }}/verseed.2.6/verseed'
-          #            dest: '{{ local_bin_dir }}/verseed'
-          #            remote_src: 'yes'
-          #            owner: root
-          #            group: root
-          #            mode: 0755
-          #        tags:
-          #        - irissoftware
-          #        become: true
-          #
-          #      ##### geotools section #########################
-          #      - name: get IDA geotool repo
-          #        git:
-          #            repo: 'https://github.com/ProjectIDA/geotool.git'
-          #            dest: '{{ geotool_src_dir }}'
-          #        tags:
-          #        - geotool
-          #        become: true
-          #
-          #      - name: make and install geotool
-          #        shell: |
-          #            cd '{{ geotool_src_dir }}'
-          #            ./install.csh
-          #        tags:
-          #        - geotool
-          #        become: true
-          #
-          #      ##### stationxml section #########################
-          #      - name: datascope-extract repo
-          #        git:
-          #            repo: 'git@github.com:ProjectIDA/datascope-extract.git'
-          #            dest: '{{ tmp_dir }}/datascope-extract'
-          #        tags:
-          #        - ida_stationxml_software
-          #
-          #      - name: install extract_datascope
-          #        copy:
-          #            src: '{{ tmp_dir }}/datascope-extract/extract_datascope'
-          #            dest: '{{ local_bin_dir }}/extract_datascope'
-          #            remote_src: 'yes'
-          #            owner: root
-          #            group: root
-          #            mode: 0755
-          #        tags:
-          #        - ida_stationxml_software
-          #        become: true
-          #
-          #      - name: install extract_datascope man page
-          #        copy:
-          #            src: '{{ tmp_dir }}/datascope-extract/docs/extract_datascope.1'
-          #            dest: '{{ local_man_dir }}/man1/extract_datascope.1'
-          #            remote_src: 'yes'
-          #            owner: root
-          #            group: root
-          #            mode: 0644
-          #        tags:
-          #        - ida_stationxml_software
-          #        become: true
-          #
-          #      - name: update manpage database
-          #        shell: |
-          #            mandb
-          #        tags:
-          #        - ida_stationxml_software
-          #        become: true
-          #
-          #      - name: idadcc-stationxml repo
-          #        git:
-          #          repo: 'git@github.com:ProjectIDA/idadcc-stationxml.git'
-          #          dest: '{{ tmp_dir }}/idadcc-stationxml'
-          #            #key_file: '~/.ssh/id_ed25519_idadcc8'
-          #        tags:
-          #        - ida_stationxml_software
-          #
-          #      - name: install idadcc-stationxml
-          #        copy:
-          #            src: '{{ tmp_dir }}/idadcc-stationxml/idastatus2stationxml'
-          #            dest: '{{ local_bin_dir }}/idastatus2stationxml'
-          #            remote_src: 'yes'
-          #            owner: root
-          #            group: root
-          #            mode: 0755
-          #        tags:
-          #          - ida_stationxml_software
-          #        become: true
-          #
-          #      - name: add idadcc user
-          #        ansible.builtin.include_tasks: 
-          #          file: users.yml
-          #          apply:
-          #            tags:
-          #              - add_idadcc_user
-          #
-
-
-
+now that Python is installed, we can install our modules
+name: install Python modules
+pip:
+  executable: "{{ pip_executable_target }}"
+  extra_args: "--no-cache-dir"
+  name: 
+     # - dynd # skip for now
+      - basemap
+      - boto3
+      - obspy
+      - dask
+      - tables
+      - toolz
+      - pycurl
+      - path.py
+      - ruamel-yaml
+      - alabaster
+      - argcomplete
+      - argh
+      - astropy
+      - awscli
+      - Babel
+      - beautifulsoup4
+      - bitarray
+      - blaze
+      - bokeh
+      - boto
+      - botocore
+      - Bottleneck
+      - cffi
+      - chest
+      - cloudpickle
+      - clyent
+      - colorama
+      - configobj
+      - cryptography
+      - Cython
+      - cytoolz
+      - datashape
+      - dill
+      - docutils
+      - et-xmlfile
+      - fabulous
+      - fastcache
+      - flake8
+      - Flask
+      - Flask-Cors
+      - gevent
+      - gitdb2
+      - GitPython
+      - greenlet
+      - h5py
+      - HeapDict
+      - ipykernel
+      - ipython
+      - ipython-genutils
+      - ipywidgets
+      - itsdangerous
+      - jdcal
+      - jedi
+      - Jinja2
+      - jmespath
+      - jsonschema
+      - jupyter
+      - jupyter-client
+      - jupyter-console
+      - jupyter-core
+      - llvmlite
+      - locket
+      - MarkupSafe
+      - mccabe
+      - mistune
+      - mpmath
+      - multipledispatch
+      - nbconvert
+      - nbformat
+      - networkx
+      - nltk
+      - nose
+      - notebook
+      - numba
+      - numexpr
+      - odo
+      - openpyxl
+      - pandas
+      - partd
+      - pathtools
+      - patsy
+      - pep8
+      #- pexpect
+      - pick
+      - pickleshare
+      - Pillow
+      - ply
+      - psutil
+      - ptyprocess
+      - py
+      - pyasn1
+      - pycosat
+      - pycparser
+      - pycrypto
+      - pyflakes
+      - Pygments
+      - pyOpenSSL
+      - pyproj
+      - pytest
+      - pytz
+      - pyweed
+      - PyYAML
+      - pyzmq
+      - QtAwesome
+      - qtconsole
+      - QtPy
+      - redis
+      - rope-py3k
+      - rsa
+      - s3transfer
+      - scikit-image
+      - scikit-learn
+      - simplegeneric
+      - singledispatch
+      - smmap2
+      - snowballstemmer
+      - sockjs-tornado
+      - Sphinx
+      - sphinx-rtd-theme
+      - spyder
+      - statsmodels
+      - sympy
+      - terminado
+      - tornado
+      - traitlets
+      - unicodecsv
+      - Werkzeug
+      - xlrd
+      - XlsxWriter
+      - xlwt
+tags:
+- pythonmodules
+become: true
 
 #- name: Enable EPEL repo on AWS EC2 Amazon Linux 2 Instances
 #  shell: |
