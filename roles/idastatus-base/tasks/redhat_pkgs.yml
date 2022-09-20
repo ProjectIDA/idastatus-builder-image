@@ -192,300 +192,205 @@ tags:
 - packages
 become: true
 
-#      - name: set python3 to point to python3.9 and reset to selected
-#        community.general.alternatives:
-#          name: python3
-#          path: "/usr/bin/python{{ python_minor_version }}"
-#          link: /usr/bin/python3
-#          state: selected
-#        tags:
-#        - python_alternatives
-#        become: true
+## Python modules section
+## Get pip installed first
+#- name: install pip3 module
+#  pip:
+#    executable: "{{ pip_executable_target }}"
+#    extra_args: "--no-cache-dir"
+#    name: 
+#        - pip
+#  tags:
+#  - pythonmodules
 #
-#      - name: Directory for download of source must exist
-#        file:
-#          path: "{{ src_dir }}"
-#          state: directory
-#        become: true
-
-
-# we are no longer building/installing Tk/Tcl, PyQt4, Python, or SIP.  We are installing an updated python 
-# package and adjusting paths with alternatives
-
-
-# The next 4 items are installed with ansible SHELL provider. Not very 'ansible', but easy to paste into shell script 
-# Tk/Tcl section
-# install Tk/Tcl nefore building python otherwise no tkinter support, 
-# which is neeed for matplotlib backends
-# NOTE: INTERACTIVE INSTALL SCRIPT: answer the prompts, accept all defaults.
-#       NOT SURE HOW to automate or run headless. CHECK ActiveState website
-#      - name: install ActiveState Tk/Tcl
-#        shell: |
-#            cd "{{ src_dir }}"
-#            wget -nc https://downloads.activestate.com/ActiveTcl/releases/8.5.19.8519/ActiveTcl-8.5.19.8519-x86_64-linux-glibc-2.5-403583.tar.gz
-#            tar xzf ActiveTcl-8.5.19.8519-x86_64-linux-glibc-2.5-403583.tar.gz
-#            cd ActiveTcl-8.5.19.8519-x86_64-linux-glibc-2.5-403583
-#            mv komodo_download komodo_download_hidden
-#            ./install.sh --directory /opt/ActiveTcl-8.5 --runtime-directory /opt/ActiveTcl-8.5 --demo-directory /opt/ActiveTcl-8.5/demos
-#        tags:
-#        - long_tktcl
-#        become: true
-
-
-# Python section
-#      - name: Install Python version "{{ python_version }}"
-#        shell: |
-#          cd "{{ src_dir }}"
-#          rm Python-{{ python_version }}.tgz
-#          wget -nc https://www.python.org/ftp/python/{{ python_version }}/Python-{{ python_version }}.tgz
-#          tar xzf Python-{{ python_version }}.tgz
-#          cd Python-{{ python_version }}
-#          ./configure --with-tcltk-includes='-I/opt/ActiveTcl-8.5/include' --with-tcltk-libs='/opt/ActiveTcl-8.5/lib/libtcl8.5.so /opt/ActiveTcl-8.5/lib/libtk8.5.so' --enable-optimizations
-#          make altinstall
-#          ln -sf /usr/local/bin/python{{python_minor_version}} /usr/local/bin/python3
-#          ln -sf /usr/local/bin/pip{{python_minor_version}} /usr/local/bin/pip3
-#          # rm /usr/src/Python-{{ python_version }}.tgz
-#        tags:
-#        - python
-#        become: true
-
-
-# SIP section
-# Now install SIP
-
-# Install and build SIP
-#  NOTE: this takes A LONG TIME
-#      - name: install SIP (before PyQt4)
-#        shell: |
-#            cd {{ src_dir }}
-#            rm sip-4.19.13.tar.gz
-#            wget -nc https://sourceforge.net/projects/pyqt/files/sip/sip-4.19.13/sip-4.19.13.tar.gz
-#            gunzip sip-4.19.13.tar.gz
-#            tar xf sip-4.19.13.tar
-#            cd sip-4.19.13
-#            /usr/local/bin/python3 configure.py --sip-module PyQt4.sip --destdir /usr/local/lib/python3.7/site-packages
-#            make
-#            make install
-#        tags:
-#        - long_sip
-#        become: true
-
-# PyQt4 section
-# Install and build PyQt4
-#  NOTE: this takes A LONG TIME
-#      - name: install PyQt4
-#        shell: |
-#            cd {{ src_dir }}
-#            rm PyQt4_gpl_x11-4.12.3.tar.gz
-#            wget -nc http://sourceforge.net/projects/pyqt/files/PyQt4/PyQt-4.12.3/PyQt4_gpl_x11-4.12.3.tar.gz
-#            tar xzf PyQt4_gpl_x11-4.12.3.tar.gz
-#            cd PyQt4_gpl_x11-4.12.3
-#            /usr/local/bin/python3 configure.py --qmake=/usr/bin/qmake-qt4 --confirm-license
-#            make
-#            make install            
-#        tags:
-#        - long_pyqt4
-#        become: true
-
-# Python modules section
-# Get pip installed first
-- name: install pip3 module
-  pip:
-    executable: "{{ pip_executable_target }}"
-    extra_args: "--no-cache-dir"
-    name: 
-        - pip
-  tags:
-  - pythonmodules
-
-- name: pip self-update
-  pip:
-    name: pip
-    state: latest
-  tags:
-  - pythonmodules
-  become: true
-
-# For some reason, obspy likes numpy to be installed
-- name: install numpy module
-  pip:
-    executable: "{{ pip_executable_target }}"
-    extra_args: "--no-cache-dir"
-    name: 
-        - numpy
-  tags:
-  - pythonmodules
-
-# now that Python is installed, we can install our modules
-- name: install Python modules
-  pip:
-    executable: "{{ pip_executable_target }}"
-    extra_args: "--no-cache-dir"
-    name: 
-       # - dynd # skip for now
-        - basemap
-        - boto3
-        - obspy
-        - dask
-        - tables
-        - toolz
-        - pycurl
-        - path.py
-        - ruamel-yaml
-        - alabaster
-        - argcomplete
-        - argh
-        - astropy
-        - awscli
-        - Babel
-        - beautifulsoup4
-        - bitarray
-        - blaze
-        - bokeh
-        - boto
-        - botocore
-        - Bottleneck
-        - cffi
-        - chest
-        - cloudpickle
-        - clyent
-        - colorama
-        - configobj
-        - cryptography
-        - Cython
-        - cytoolz
-        - datashape
-        - dill
-        - docutils
-        - et-xmlfile
-        - fabulous
-        - fastcache
-        - flake8
-        - Flask
-        - Flask-Cors
-        - gevent
-        - gitdb2
-        - GitPython
-        - greenlet
-        - h5py
-        - HeapDict
-        - ipykernel
-        - ipython
-        - ipython-genutils
-        - ipywidgets
-        - itsdangerous
-        - jdcal
-        - jedi
-        - Jinja2
-        - jmespath
-        - jsonschema
-        - jupyter
-        - jupyter-client
-        - jupyter-console
-        - jupyter-core
-        - llvmlite
-        - locket
-        - MarkupSafe
-        - mccabe
-        - mistune
-        - mpmath
-        - multipledispatch
-        - nbconvert
-        - nbformat
-        - networkx
-        - nltk
-        - nose
-        - notebook
-        - numba
-        - numexpr
-        - odo
-        - openpyxl
-        - pandas
-        - partd
-        - pathtools
-        - patsy
-        - pep8
-        #- pexpect
-        - pick
-        - pickleshare
-        - Pillow
-        - ply
-        - psutil
-        - ptyprocess
-        - py
-        - pyasn1
-        - pycosat
-        - pycparser
-        - pycrypto
-        - pyflakes
-        - Pygments
-        - pyOpenSSL
-        - pyproj
-        - pytest
-        - pytz
-        - pyweed
-        - PyYAML
-        - pyzmq
-        - QtAwesome
-        - qtconsole
-        - QtPy
-        - redis
-        - rope-py3k
-        - rsa
-        - s3transfer
-        - scikit-image
-        - scikit-learn
-        - simplegeneric
-        - singledispatch
-        - smmap2
-        - snowballstemmer
-        - sockjs-tornado
-        - Sphinx
-        - sphinx-rtd-theme
-        - spyder
-        - statsmodels
-        - sympy
-        - terminado
-        - tornado
-        - traitlets
-        - unicodecsv
-        - Werkzeug
-        - xlrd
-        - XlsxWriter
-        - xlwt
-  tags:
-  - pythonmodules
-  become: true
-
-#- name: Enable EPEL repo on AWS EC2 Amazon Linux 2 Instances
-#  shell: |
-#    amazon-linux-extras install epel -y
-#  when: is_ec2
-#  become: true
-#
-#- name: Enable EPEL repo on Centos 7 OSes
-#  yum:
-#    name: epel-release
-#    # baseurl: https://download.fedoraproject.org/pub/epel/$releasever/$basearch/
-#  when: not cloudstat.stat.isdir is defined and ansible_facts['os_family'] == "RedHat"
-#  become: true
-#
-#- name: install system pkgs
-#  yum:
-#    name: "{{ pkgs }}"
+#- name: pip self-update
+#  pip:
+#    name: pip
 #    state: latest
-#    update_cache: yes
+#  tags:
+#  - pythonmodules
 #  become: true
-#  vars:
-#    pkgs: 
-#      - openssh
-#      - make
-#      - zlib-devel
-#      - wget
-#      - gcc
-#      - ncurses-devel
-#      - libxml2-devel
-#      - tcsh
+#
+## For some reason, obspy likes numpy to be installed
+#- name: install numpy module
+#  pip:
+#    executable: "{{ pip_executable_target }}"
+#    extra_args: "--no-cache-dir"
+#    name: 
+#        - numpy
+#  tags:
+#  - pythonmodules
+#
+## now that Python is installed, we can install our modules
+#- name: install Python modules
+#  pip:
+#    executable: "{{ pip_executable_target }}"
+#    extra_args: "--no-cache-dir"
+#    name: 
+#       # - dynd # skip for now
+#        - basemap
+#        - boto3
+#        - obspy
+#        - dask
+#        - tables
+#        - toolz
+#        - pycurl
+#        - path.py
+#        - ruamel-yaml
+#        - alabaster
+#        - argcomplete
+#        - argh
+#        - astropy
+#        - awscli
+#        - Babel
+#        - beautifulsoup4
+#        - bitarray
+#        - blaze
+#        - bokeh
+#        - boto
+#        - botocore
+#        - Bottleneck
+#        - cffi
+#        - chest
+#        - cloudpickle
+#        - clyent
+#        - colorama
+#        - configobj
+#        - cryptography
+#        - Cython
+#        - cytoolz
+#        - datashape
+#        - dill
+#        - docutils
+#        - et-xmlfile
+#        - fabulous
+#        - fastcache
+#        - flake8
+#        - Flask
+#        - Flask-Cors
+#        - gevent
+#        - gitdb2
+#        - GitPython
+#        - greenlet
+#        - h5py
+#        - HeapDict
+#        - ipykernel
+#        - ipython
+#        - ipython-genutils
+#        - ipywidgets
+#        - itsdangerous
+#        - jdcal
+#        - jedi
+#        - Jinja2
+#        - jmespath
+#        - jsonschema
+#        - jupyter
+#        - jupyter-client
+#        - jupyter-console
+#        - jupyter-core
+#        - llvmlite
+#        - locket
+#        - MarkupSafe
+#        - mccabe
+#        - mistune
+#        - mpmath
+#        - multipledispatch
+#        - nbconvert
+#        - nbformat
+#        - networkx
+#        - nltk
+#        - nose
+#        - notebook
+#        - numba
+#        - numexpr
+#        - odo
+#        - openpyxl
+#        - pandas
+#        - partd
+#        - pathtools
+#        - patsy
+#        - pep8
+#        #- pexpect
+#        - pick
+#        - pickleshare
+#        - Pillow
+#        - ply
+#        - psutil
+#        - ptyprocess
+#        - py
+#        - pyasn1
+#        - pycosat
+#        - pycparser
+#        - pycrypto
+#        - pyflakes
+#        - Pygments
+#        - pyOpenSSL
+#        - pyproj
+#        - pytest
+#        - pytz
+#        - pyweed
+#        - PyYAML
+#        - pyzmq
+#        - QtAwesome
+#        - qtconsole
+#        - QtPy
+#        - redis
+#        - rope-py3k
+#        - rsa
+#        - s3transfer
+#        - scikit-image
+#        - scikit-learn
+#        - simplegeneric
+#        - singledispatch
+#        - smmap2
+#        - snowballstemmer
+#        - sockjs-tornado
+#        - Sphinx
+#        - sphinx-rtd-theme
+#        - spyder
+#        - statsmodels
+#        - sympy
+#        - terminado
+#        - tornado
+#        - traitlets
+#        - unicodecsv
+#        - Werkzeug
+#        - xlrd
+#        - XlsxWriter
+#        - xlwt
+#  tags:
+#  - pythonmodules
+#  become: true
+#
+##- name: Enable EPEL repo on AWS EC2 Amazon Linux 2 Instances
+##  shell: |
+##    amazon-linux-extras install epel -y
+##  when: is_ec2
+##  become: true
+##
+##- name: Enable EPEL repo on Centos 7 OSes
+##  yum:
+##    name: epel-release
+##    # baseurl: https://download.fedoraproject.org/pub/epel/$releasever/$basearch/
+##  when: not cloudstat.stat.isdir is defined and ansible_facts['os_family'] == "RedHat"
+##  become: true
+##
+##- name: install system pkgs
+##  yum:
+##    name: "{{ pkgs }}"
+##    state: latest
+##    update_cache: yes
+##  become: true
+##  vars:
+##    pkgs: 
+##      - openssh
+##      - make
+##      - zlib-devel
+##      - wget
+##      - gcc
+##      - ncurses-devel
+##      - libxml2-devel
+##      - tcsh
 #      - vim
 #  #    - ntp
 #      - chrony
