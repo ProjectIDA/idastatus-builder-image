@@ -14,22 +14,28 @@
 #local_bin_dir: "/usr/local/bin"
 #local_man_dir: "/usr/local/share/man/"
 
-- name: set up subscription-manager
+- name: Enable EPEL repo on AWS EC2 Amazon Linux 2 Instances
   shell: |
-    subscription-manager repos --enable rhel-7-*
-  tags:
-    - pkgrepos
+    amazon-linux-extras install epel -y
+  when: is_ec2
   become: true
-  
-- name: Add EPEL repository
-  yum_repository:
-      name: epel
-      description: EPEL repo
-      baseurl: https://download.fedoraproject.org/pub/epel/$releasever/Modular/$basearch/
-      enabled: yes
-  tags:
-    - pkgrepos
+
+- name: Enable EPEL repo on Centos 7 OSes
+  yum:
+    name: epel-release
+    # baseurl: https://download.fedoraproject.org/pub/epel/$releasever/$basearch/
+  when: not cloudstat.stat.isdir is defined and ansible_facts['os_family'] == "RedHat"
   become: true
+
+  #- name: Add EPEL repository
+  #  yum_repository:
+  #      name: epel
+  #      description: EPEL repo
+  #      baseurl: https://download.fedoraproject.org/pub/epel/$releasever/Modular/$basearch/
+  #      enabled: yes
+  #  tags:
+  #    - pkgrepos
+  #  become: true
   
 - name: Add docker repository
   # the yum_repository method doesn't work, using get_url instead
