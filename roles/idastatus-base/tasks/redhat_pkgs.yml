@@ -1,19 +1,4 @@
 # os_family == 'redhat' SYSTEM SPECIFIC
-
-# common variables
-
-python_version: "3.9.7"
-python_minor_version: "3.9"
-python_package_name: "python39"
-pip_executable_target: /bin/pip3.9
-src_dir: "/usr/local/src"
-tmp_dir: "/tmp"
-geotool_src_dir: "/usr/local/src/geotool"
-ida_scripts_dir: "/usr/local/scripts"
-python_modules_dir: "/ida/local/modules-py"
-local_bin_dir: "/usr/local/bin"
-local_man_dir: "/usr/local/share/man/"
-
 - name: Enable EPEL repo on AWS EC2 Amazon Linux 2 Instances
   shell: |
     amazon-linux-extras install epel -y
