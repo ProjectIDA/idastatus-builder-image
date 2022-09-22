@@ -34,46 +34,46 @@
     - pkgrepos
   become: true
   
-- name: install epel pkgs
-  dnf:
-    disable_gpg_check: yes
-    name: 
-        - https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-        - epel-release
-    state: present
-  tags:
-  - packages
-  become: true
+  #- name: install epel pkgs
+  #  dnf:
+  #    disable_gpg_check: yes
+  #    name: 
+  #        - https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+  #        - epel-release
+  #    state: present
+  #  tags:
+  #  - packages
+  #  become: true
+  #  
+  #- name: remove container tools
+  #  dnf:
+  #    disable_gpg_check: yes
+  #    allowerasing: yes
+  #    name: 
+  #        - "@container-tools"
+  #    state: absent
+  #  tags:
+  #  - packages
+  #  become: true
+  #  
+  #- name: install wheel pkg
+  #  dnf:
+  #    disable_gpg_check: yes
+  #    allowerasing: yes
+  #    name: 
+  #        - "{{ python_package_name }}-wheel-wheel.noarch"
+  #        - "{{ python_package_name }}-setuptools-wheel.noarch"
+  #        - "{{ python_package_name }}-pip-wheel.noarch"
+  #    state: present
+  #  tags:
+  #  - packages
+  #  become: true
   
-- name: remove container tools
+- name: install docker-ce
   dnf:
     disable_gpg_check: yes
     allowerasing: yes
-    name: 
-        - "@container-tools"
-    state: absent
-  tags:
-  - packages
-  become: true
-  
-- name: install wheel pkg
-  dnf:
-    disable_gpg_check: yes
-    allowerasing: yes
-    name: 
-        - "{{ python_package_name }}-wheel-wheel.noarch"
-        - "{{ python_package_name }}-setuptools-wheel.noarch"
-        - "{{ python_package_name }}-pip-wheel.noarch"
-    state: present
-  tags:
-  - packages
-  become: true
-  
-- name: install docker-ce with nobest
-  dnf:
-    disable_gpg_check: yes
-    allowerasing: yes
-    nobest: yes
+    # remove later... nobest: yes
     name: 
         - docker-ce
         - docker-ce-cli
@@ -81,7 +81,7 @@
         - docker-compose-plugin
     state: present
   tags:
-  - packages
+    - packages
   become: true
   
 - name: install pkgs
@@ -92,7 +92,7 @@
         - "{{ python_package_name }}"
         - "{{ python_package_name }}-pip"
         - "{{ python_package_name }}-devel"
-        - https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+          #- https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
           #- https://kojipkgs.fedoraproject.org//packages/selinux-policy/37.7/2.eln120/noarch/selinux-policy-37.7-2.eln120.noarch.rpm
           #- https://kojipkgs.fedoraproject.org//packages/container-selinux/2.189.0/2.eln120/noarch/container-selinux-2.189.0-2.eln120.noarch.rpm
           #- "@container-tools"
@@ -180,7 +180,7 @@
         - git
     state: present
   tags:
-  - packages
+    - packages
   become: true
 
 ## Python modules section
