@@ -21,24 +21,24 @@
   when: not cloudstat.stat.isdir is defined and ansible_facts['os_family'] == "RedHat"
   become: true
 
-  #- name: Add EPEL repository
-  #  yum_repository:
-  #      name: epel
-  #      description: EPEL repo
-  #      baseurl: https://download.fedoraproject.org/pub/epel/$releasever/Modular/$basearch/
-  #      enabled: yes
-  #  tags:
-  #    - pkgrepos
-  #  become: true
-  
-- name: Add docker repository
-  # the yum_repository method doesn't work, using get_url instead
-  get_url:
-    url: https://download.docker.com/linux/rhel/docker-ce.repo
-    dest: /etc/yum.repos.d/docker-ce.repo
+- name: Add EPEL repository
+  yum_repository:
+      name: epel
+      description: EPEL repo
+      baseurl: https://download.docker.com/linux/rhel/docker-ce.repo
+      enabled: yes
   tags:
     - pkgrepos
   become: true
+  
+  #- name: Add docker repository
+  #  # the yum_repository method doesn't work, using get_url instead
+  #  get_url:
+  #    url: https://download.docker.com/linux/rhel/docker-ce.repo
+  #    dest: /etc/yum.repos.d/docker-ce.repo
+  #  tags:
+  #    - pkgrepos
+  #  become: true
   
   #- name: install epel pkgs
   #  yum:
