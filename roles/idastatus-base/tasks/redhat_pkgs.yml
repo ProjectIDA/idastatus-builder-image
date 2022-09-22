@@ -36,9 +36,6 @@
   get_url:
     url: https://download.docker.com/linux/rhel/docker-ce.repo
     dest: /etc/yum.repos.d/docker-ce.repo
-  when:
-    - ansible_facts['distribution'] == "RedHat"
-    - ansible_facts['distribution_major_version'] == "7"
   tags:
     - pkgrepos
   become: true
@@ -187,7 +184,6 @@
         - telnet
         - tmux
         - git
-    state: present
   tags:
     - packages
   become: true
