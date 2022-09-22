@@ -35,7 +35,7 @@
   become: true
   
   #- name: install epel pkgs
-  #  dnf:
+  #  yum:
   #    disable_gpg_check: yes
   #    name: 
   #        - https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
@@ -46,7 +46,7 @@
   #  become: true
   #  
   #- name: remove container tools
-  #  dnf:
+  #  yum:
   #    disable_gpg_check: yes
   #    allowerasing: yes
   #    name: 
@@ -57,7 +57,7 @@
   #  become: true
   #  
   #- name: install wheel pkg
-  #  dnf:
+  #  yum:
   #    disable_gpg_check: yes
   #    allowerasing: yes
   #    name: 
@@ -70,7 +70,7 @@
   #  become: true
   
 - name: install docker-ce
-  dnf:
+  yum:
     disable_gpg_check: yes
     allowerasing: yes
     # remove later... nobest: yes
@@ -85,7 +85,7 @@
   become: true
   
 - name: install pkgs
-  dnf:
+  yum:
     disable_gpg_check: yes
     allowerasing: yes
     name: 
