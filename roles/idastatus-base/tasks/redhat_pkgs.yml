@@ -78,21 +78,20 @@
   #  - packages
   #  become: true
   
-  # removing for now to test, 9/22 11:40
-  #- name: install docker-ce
-  #  yum:
-  #    disable_gpg_check: yes
-  #    # remove later... allowerasing: yes
-  #    # remove later... nobest: yes
-  #    name: 
-  #        - docker-ce
-  #        - docker-ce-cli
-  #        - containerd.io
-  #        - docker-compose-plugin
-  #    state: present
-  #  tags:
-  #    - packages
-  #  become: true
+- name: install docker-ce
+  yum:
+    disable_gpg_check: yes
+    # remove later... allowerasing: yes
+    # remove later... nobest: yes
+    name: 
+        - docker-ce
+        - docker-ce-cli
+        - containerd.io
+        - docker-compose-plugin
+    state: present
+  tags:
+    - packages
+  become: true
   
 - name: install pkgs
   yum:
