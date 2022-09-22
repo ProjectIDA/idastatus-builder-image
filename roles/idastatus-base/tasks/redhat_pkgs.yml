@@ -5,16 +5,17 @@
   when: is_ec2
   become: true
 
-- name: Install DNF
-  yum:
-    name: dnf
-    state: present
-  tags:
-    - packages
-  become: true
+# remove, probably don't need
+# - name: Install DNF
+#  yum:
+#    name: dnf
+#    state: present
+#  tags:
+#    - packages
+#  become: true
 
 - name: Enable EPEL repo on Centos 7 OSes
-  dnf:
+  yum:
     name: epel-release
     # baseurl: https://download.fedoraproject.org/pub/epel/$releasever/$basearch/
   when: not cloudstat.stat.isdir is defined and ansible_facts['os_family'] == "RedHat"
@@ -43,7 +44,7 @@
   become: true
   
   #- name: install epel pkgs
-  #  dnf:
+  #  yum:
   #    disable_gpg_check: yes
   #    name: 
   #        - https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
@@ -54,7 +55,7 @@
   #  become: true
   #  
   #- name: remove container tools
-  #  dnf:
+  #  yum:
   #    disable_gpg_check: yes
   #    allowerasing: yes
   #    name: 
@@ -65,7 +66,7 @@
   #  become: true
   #  
   #- name: install wheel pkg
-  #  dnf:
+  #  yum:
   #    disable_gpg_check: yes
   #    allowerasing: yes
   #    name: 
@@ -77,29 +78,30 @@
   #  - packages
   #  become: true
   
-- name: install docker-ce
-  dnf:
-    disable_gpg_check: yes
-    # remove later... allowerasing: yes
-    # remove later... nobest: yes
-    name: 
-        - docker-ce
-        - docker-ce-cli
-        - containerd.io
-        - docker-compose-plugin
-    state: present
-  tags:
-    - packages
-  become: true
+  # removing for now to test, 9/22 11:40
+  #- name: install docker-ce
+  #  yum:
+  #    disable_gpg_check: yes
+  #    # remove later... allowerasing: yes
+  #    # remove later... nobest: yes
+  #    name: 
+  #        - docker-ce
+  #        - docker-ce-cli
+  #        - containerd.io
+  #        - docker-compose-plugin
+  #    state: present
+  #  tags:
+  #    - packages
+  #  become: true
   
 - name: install pkgs
-  dnf:
-    disable_gpg_check: yes
-    allowerasing: yes
+  yum:
+    state: latest
+    update_cache: yes
     name: 
-        - "{{ python_package_name }}"
-        - "{{ python_package_name }}-pip"
-        - "{{ python_package_name }}-devel"
+          #- "{{ python_package_name }}"
+          #    - "{{ python_package_name }}-pip"
+          #    - "{{ python_package_name }}-devel"
           #- https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
           #- https://kojipkgs.fedoraproject.org//packages/selinux-policy/37.7/2.eln120/noarch/selinux-policy-37.7-2.eln120.noarch.rpm
           #- https://kojipkgs.fedoraproject.org//packages/container-selinux/2.189.0/2.eln120/noarch/container-selinux-2.189.0-2.eln120.noarch.rpm
@@ -110,7 +112,7 @@
         - libmng
         - xorg-x11-server-Xorg
         - "@Development Tools"
-        - "@Server with GUI"
+          #- "@Server with GUI"
         - gcc
         - wget
         - ftp
@@ -137,50 +139,50 @@
         #- qt-settings
         #- qt
         #- qt-x11
-        - libICE-devel
-        - libSM-devel
-        - libtirpc-devel
-        - gl-manpages
-        - libXau-devel
-        - libxcb-devel
-        - libX11-devel
-        - libXext-devel
-        - libXfixes-devel
-        - libXrender-devel
-        - libXrandr-devel
-        - libXcursor-devel
-        - libXdamage-devel
-        - libXi-devel
-        - libXv-devel
-        - libXxf86vm-devel
-        - libXinerama-devel
-        - libxml2
-        - libxml2-devel
-        - libXt-devel
-        - libglvnd-opengl
-        - libuuid-devel
-        - expat-devel
-        - libglvnd-core-devel
-        - libglvnd-devel
-        - libdrm-devel
-        - mesa-libGL-devel
-        - mesa-libGLU-devel
-        - libpng-devel
-        - freetype-devel
-        - fontconfig-devel
-        - libXft-devel
+        #- libICE-devel
+        #- libSM-devel
+        #- libtirpc-devel
+        #- gl-manpages
+        #- libXau-devel
+        #- libxcb-devel
+        #- libX11-devel
+        #- libXext-devel
+        #- libXfixes-devel
+        #- libXrender-devel
+        #- libXrandr-devel
+        #- libXcursor-devel
+        #- libXdamage-devel
+        #- libXi-devel
+        #- libXv-devel
+        #- libXxf86vm-devel
+        #- libXinerama-devel
+        #- libxml2
+        #- libxml2-devel
+        #- libXt-devel
+        #- libglvnd-opengl
+        #- libuuid-devel
+        #- expat-devel
+        #- libglvnd-core-devel
+        #- libglvnd-devel
+        #- libdrm-devel
+        #- mesa-libGL-devel
+        #- mesa-libGLU-devel
+        #- libpng-devel
+        #- freetype-devel
+        #- fontconfig-devel
+        #- libXft-devel
           #- qt-devel
         - tcl
         - tk
-        - tcl-devel
-        - tk-devel
-        - ncurses-devel
-        - xz-devel
-        - motif-devel
+        #- tcl-devel
+        #- tk-devel
+        #- ncurses-devel
+        #- xz-devel
+        #- motif-devel
         - golang
-          #- libsqlite3x-devel
-          #- libsq3-devel
-          #- libsqlite3x
+        #- libsqlite3x-devel
+        #- libsq3-devel
+        #- libsqlite3x
         - tree
         #- gitflow
         - telnet
