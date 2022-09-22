@@ -9,7 +9,7 @@
   yum:
     name: dnf
     state: present
-    tags:
+  tags:
     - packages
   become: true
 
