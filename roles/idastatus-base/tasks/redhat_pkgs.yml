@@ -14,8 +14,6 @@ python_modules_dir: "/ida/local/modules-py"
 local_bin_dir: "/usr/local/bin"
 local_man_dir: "/usr/local/share/man/"
 
---
-
   - name: Enable EPEL repo on AWS EC2 Amazon Linux 2 Instances
     shell: |
       amazon-linux-extras install epel -y
