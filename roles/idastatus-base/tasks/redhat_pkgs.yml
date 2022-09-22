@@ -5,6 +5,14 @@
   when: is_ec2
   become: true
 
+- name: Install DNF
+  yum:
+    name: dnf
+    state: present
+    tags:
+    - packages
+  become: true
+
 - name: Enable EPEL repo on Centos 7 OSes
   dnf:
     name: epel-release
