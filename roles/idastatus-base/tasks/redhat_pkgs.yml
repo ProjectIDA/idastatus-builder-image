@@ -6,7 +6,7 @@
   become: true
 
 - name: Enable EPEL repo on Centos 7 OSes
-  yum:
+  dnf:
     name: epel-release
     # baseurl: https://download.fedoraproject.org/pub/epel/$releasever/$basearch/
   when: not cloudstat.stat.isdir is defined and ansible_facts['os_family'] == "RedHat"
@@ -35,7 +35,7 @@
   become: true
   
   #- name: install epel pkgs
-  #  yum:
+  #  dnf:
   #    disable_gpg_check: yes
   #    name: 
   #        - https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
@@ -46,7 +46,7 @@
   #  become: true
   #  
   #- name: remove container tools
-  #  yum:
+  #  dnf:
   #    disable_gpg_check: yes
   #    allowerasing: yes
   #    name: 
@@ -57,7 +57,7 @@
   #  become: true
   #  
   #- name: install wheel pkg
-  #  yum:
+  #  dnf:
   #    disable_gpg_check: yes
   #    allowerasing: yes
   #    name: 
@@ -70,9 +70,9 @@
   #  become: true
   
 - name: install docker-ce
-  yum:
+  dnf:
     disable_gpg_check: yes
-    allowerasing: yes
+    # remove later... allowerasing: yes
     # remove later... nobest: yes
     name: 
         - docker-ce
@@ -85,7 +85,7 @@
   become: true
   
 - name: install pkgs
-  yum:
+  dnf:
     disable_gpg_check: yes
     allowerasing: yes
     name: 
