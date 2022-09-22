@@ -14,189 +14,191 @@ python_modules_dir: "/ida/local/modules-py"
 local_bin_dir: "/usr/local/bin"
 local_man_dir: "/usr/local/share/man/"
 
-- name: Enable EPEL repo on AWS EC2 Amazon Linux 2 Instances
-  shell: |
-    amazon-linux-extras install epel -y
-  when: is_ec2
-  become: true
+--
 
-- name: Enable EPEL repo on Centos 7 OSes
-  yum:
-    name: epel-release
-    # baseurl: https://download.fedoraproject.org/pub/epel/$releasever/$basearch/
-  when: not cloudstat.stat.isdir is defined and ansible_facts['os_family'] == "RedHat"
-  become: true
-
-  #- name: Add EPEL repository
-  #  yum_repository:
-  #      name: epel
-  #      description: EPEL repo
-  #      baseurl: https://download.fedoraproject.org/pub/epel/$releasever/Modular/$basearch/
-  #      enabled: yes
-  #  tags:
-  #    - pkgrepos
-  #  become: true
+  - name: Enable EPEL repo on AWS EC2 Amazon Linux 2 Instances
+    shell: |
+      amazon-linux-extras install epel -y
+    when: is_ec2
+    become: true
   
-- name: Add docker repository
-  # the yum_repository method doesn't work, using get_url instead
-  get_url:
-    url: https://download.docker.com/linux/rhel/docker-ce.repo
-    dest: /etc/yum.repos.d/docker-ce.repo
-  when:
-    - ansible_facts['distribution'] == "RedHat"
-    - ansible_facts['distribution_major_version'] == "7"
-  tags:
-    - pkgrepos
-  become: true
+  - name: Enable EPEL repo on Centos 7 OSes
+    yum:
+      name: epel-release
+      # baseurl: https://download.fedoraproject.org/pub/epel/$releasever/$basearch/
+    when: not cloudstat.stat.isdir is defined and ansible_facts['os_family'] == "RedHat"
+    become: true
   
-- name: install epel pkgs
-  dnf:
-    disable_gpg_check: yes
-    name: 
-        - https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-        - epel-release
-    state: present
-  tags:
-  - packages
-  become: true
-  
-- name: remove container tools
-  dnf:
-    disable_gpg_check: yes
-    allowerasing: yes
-    name: 
-        - "@container-tools"
-    state: absent
-  tags:
-  - packages
-  become: true
-  
-- name: install wheel pkg
-  dnf:
-    disable_gpg_check: yes
-    allowerasing: yes
-    name: 
-        - "{{ python_package_name }}-wheel-wheel.noarch"
-        - "{{ python_package_name }}-setuptools-wheel.noarch"
-        - "{{ python_package_name }}-pip-wheel.noarch"
-    state: present
-  tags:
-  - packages
-  become: true
-  
-- name: install docker-ce with nobest
-  dnf:
-    disable_gpg_check: yes
-    allowerasing: yes
-    nobest: yes
-    name: 
-        - docker-ce
-        - docker-ce-cli
-        - containerd.io
-        - docker-compose-plugin
-    state: present
-  tags:
-  - packages
-  become: true
-  
-- name: install pkgs
-  dnf:
-    disable_gpg_check: yes
-    allowerasing: yes
-    name: 
-        - "{{ python_package_name }}"
-        - "{{ python_package_name }}-pip"
-        - "{{ python_package_name }}-devel"
-        - https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-          #- https://kojipkgs.fedoraproject.org//packages/selinux-policy/37.7/2.eln120/noarch/selinux-policy-37.7-2.eln120.noarch.rpm
-          #- https://kojipkgs.fedoraproject.org//packages/container-selinux/2.189.0/2.eln120/noarch/container-selinux-2.189.0-2.eln120.noarch.rpm
-          #- "@container-tools"
-          #- selinux-policy
-          #- selinux-policy-any
-          #- selinux-policy-targeted
-        - libmng
-        - xorg-x11-server-Xorg
-        - "@Development Tools"
-        - "@Server with GUI"
-        - gcc
-        - wget
-        - ftp
-        - libkadm5
-        - libcom_err-devel
-        - libsepol-devel
-        - zlib-devel
-        - pcre-devel
-        - libselinux-devel
-        - libverto-devel
-        - keyutils-libs-devel
-        - krb5-devel
-        - openssl-devel
-        - bzip2-devel
-        - libffi-devel
-        - libcurl-devel
-        #- libaec
-        #- libaec-devel
-        #- hdf5
-        #- hdf5-devel
-        - libXScrnSaver
-        #- geos
-        #- geos-devel
-        #- qt-settings
-        #- qt
-        #- qt-x11
-        - libICE-devel
-        - libSM-devel
-        - libtirpc-devel
-        - gl-manpages
-        - libXau-devel
-        - libxcb-devel
-        - libX11-devel
-        - libXext-devel
-        - libXfixes-devel
-        - libXrender-devel
-        - libXrandr-devel
-        - libXcursor-devel
-        - libXdamage-devel
-        - libXi-devel
-        - libXv-devel
-        - libXxf86vm-devel
-        - libXinerama-devel
-        - libxml2
-        - libxml2-devel
-        - libXt-devel
-        - libglvnd-opengl
-        - libuuid-devel
-        - expat-devel
-        - libglvnd-core-devel
-        - libglvnd-devel
-        - libdrm-devel
-        - mesa-libGL-devel
-        - mesa-libGLU-devel
-        - libpng-devel
-        - freetype-devel
-        - fontconfig-devel
-        - libXft-devel
-          #- qt-devel
-        - tcl
-        - tk
-        - tcl-devel
-        - tk-devel
-        - ncurses-devel
-        - xz-devel
-        - motif-devel
-        - golang
-          #- libsqlite3x-devel
-          #- libsq3-devel
-          #- libsqlite3x
-        - tree
-        #- gitflow
-        - telnet
-        - tmux
-        - git
-    state: present
-  tags:
-  - packages
-  become: true
+    #- name: Add EPEL repository
+    #  yum_repository:
+    #      name: epel
+    #      description: EPEL repo
+    #      baseurl: https://download.fedoraproject.org/pub/epel/$releasever/Modular/$basearch/
+    #      enabled: yes
+    #  tags:
+    #    - pkgrepos
+    #  become: true
+    
+  - name: Add docker repository
+    # the yum_repository method doesn't work, using get_url instead
+    get_url:
+      url: https://download.docker.com/linux/rhel/docker-ce.repo
+      dest: /etc/yum.repos.d/docker-ce.repo
+    when:
+      - ansible_facts['distribution'] == "RedHat"
+      - ansible_facts['distribution_major_version'] == "7"
+    tags:
+      - pkgrepos
+    become: true
+    
+  - name: install epel pkgs
+    dnf:
+      disable_gpg_check: yes
+      name: 
+          - https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+          - epel-release
+      state: present
+    tags:
+    - packages
+    become: true
+    
+  - name: remove container tools
+    dnf:
+      disable_gpg_check: yes
+      allowerasing: yes
+      name: 
+          - "@container-tools"
+      state: absent
+    tags:
+    - packages
+    become: true
+    
+  - name: install wheel pkg
+    dnf:
+      disable_gpg_check: yes
+      allowerasing: yes
+      name: 
+          - "{{ python_package_name }}-wheel-wheel.noarch"
+          - "{{ python_package_name }}-setuptools-wheel.noarch"
+          - "{{ python_package_name }}-pip-wheel.noarch"
+      state: present
+    tags:
+    - packages
+    become: true
+    
+  - name: install docker-ce with nobest
+    dnf:
+      disable_gpg_check: yes
+      allowerasing: yes
+      nobest: yes
+      name: 
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+          - docker-compose-plugin
+      state: present
+    tags:
+    - packages
+    become: true
+    
+  - name: install pkgs
+    dnf:
+      disable_gpg_check: yes
+      allowerasing: yes
+      name: 
+          - "{{ python_package_name }}"
+          - "{{ python_package_name }}-pip"
+          - "{{ python_package_name }}-devel"
+          - https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+            #- https://kojipkgs.fedoraproject.org//packages/selinux-policy/37.7/2.eln120/noarch/selinux-policy-37.7-2.eln120.noarch.rpm
+            #- https://kojipkgs.fedoraproject.org//packages/container-selinux/2.189.0/2.eln120/noarch/container-selinux-2.189.0-2.eln120.noarch.rpm
+            #- "@container-tools"
+            #- selinux-policy
+            #- selinux-policy-any
+            #- selinux-policy-targeted
+          - libmng
+          - xorg-x11-server-Xorg
+          - "@Development Tools"
+          - "@Server with GUI"
+          - gcc
+          - wget
+          - ftp
+          - libkadm5
+          - libcom_err-devel
+          - libsepol-devel
+          - zlib-devel
+          - pcre-devel
+          - libselinux-devel
+          - libverto-devel
+          - keyutils-libs-devel
+          - krb5-devel
+          - openssl-devel
+          - bzip2-devel
+          - libffi-devel
+          - libcurl-devel
+          #- libaec
+          #- libaec-devel
+          #- hdf5
+          #- hdf5-devel
+          - libXScrnSaver
+          #- geos
+          #- geos-devel
+          #- qt-settings
+          #- qt
+          #- qt-x11
+          - libICE-devel
+          - libSM-devel
+          - libtirpc-devel
+          - gl-manpages
+          - libXau-devel
+          - libxcb-devel
+          - libX11-devel
+          - libXext-devel
+          - libXfixes-devel
+          - libXrender-devel
+          - libXrandr-devel
+          - libXcursor-devel
+          - libXdamage-devel
+          - libXi-devel
+          - libXv-devel
+          - libXxf86vm-devel
+          - libXinerama-devel
+          - libxml2
+          - libxml2-devel
+          - libXt-devel
+          - libglvnd-opengl
+          - libuuid-devel
+          - expat-devel
+          - libglvnd-core-devel
+          - libglvnd-devel
+          - libdrm-devel
+          - mesa-libGL-devel
+          - mesa-libGLU-devel
+          - libpng-devel
+          - freetype-devel
+          - fontconfig-devel
+          - libXft-devel
+            #- qt-devel
+          - tcl
+          - tk
+          - tcl-devel
+          - tk-devel
+          - ncurses-devel
+          - xz-devel
+          - motif-devel
+          - golang
+            #- libsqlite3x-devel
+            #- libsq3-devel
+            #- libsqlite3x
+          - tree
+          #- gitflow
+          - telnet
+          - tmux
+          - git
+      state: present
+    tags:
+    - packages
+    become: true
 
 ## Python modules section
 ## Get pip installed first
