@@ -259,7 +259,7 @@
     name: idadcc
     local: yes
     uid: 4001
-    group: idadcc
+    groups: idadcc, docker
     home: "{{ home_location }}/idadcc"
     shell: /usr/bin/bash
     password: '$6$agyXOv6Ybw4Smau1$DocCmQk6YiFrG8UlCjJGhC472cnBp2h.uy91oqgQjXlJvbgNk88Y3SOCxOII6l4HKAEsXCPewgMgJgXiNiaD5/'
@@ -420,7 +420,16 @@
     #  become_user: nrts
     #  become: yes
     #
-    #- name: install vim plugins
-    #  ansible.builtin.shell: vim +'PlugInstall --sync' +qa
-    #  become_user: nrts
-    #  become: yes
+    #
+
+
+- name: install docker-compose manually
+  shell: |
+    mkdir -p /usr/local/bin
+    wget -o /usr/local/bin/docker-compose https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)
+    chmod +x /usr/local/bin/docker-compose
+    systemctl start docker.service
+
+  become: yes
+  tags:
+     - packages
