@@ -107,10 +107,7 @@
           #- selinux-policy-any
           #- selinux-policy-targeted
           #- "@Server with GUI"
-        - docker-ce
-        - docker-ce-cli
-        - containerd.io
-        - docker-compose-plugin
+        - docker
         - libmng
         - xorg-x11-server-Xorg
         - "@Development Tools"
