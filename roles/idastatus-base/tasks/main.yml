@@ -264,7 +264,7 @@
     shell: /usr/bin/bash
     password: '$6$agyXOv6Ybw4Smau1$DocCmQk6YiFrG8UlCjJGhC472cnBp2h.uy91oqgQjXlJvbgNk88Y3SOCxOII6l4HKAEsXCPewgMgJgXiNiaD5/'
     generate_ssh_key: yes
-    state: present
+    state: absent
   become: yes
   tags:
     - usermods
