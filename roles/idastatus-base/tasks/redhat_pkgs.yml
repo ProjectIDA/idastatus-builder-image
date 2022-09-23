@@ -5,31 +5,31 @@
   when: is_ec2
   become: true
 
-# remove, probably don't need
-# - name: Install DNF
-#  yum:
-#    name: dnf
-#    state: present
-#  tags:
-#    - packages
-#  become: true
+  # removed, dnf is not used in AWS EC2 Amazon Linux 2
+  # - name: Install DNF
+  #  yum:
+  #    name: dnf
+  #    state: present
+  #  tags:
+  #    - packages
+  #  become: true
 
-- name: Enable EPEL repo on Centos 7 OSes
-  yum:
-    name: epel-release
-    # baseurl: https://download.fedoraproject.org/pub/epel/$releasever/$basearch/
-  when: not cloudstat.stat.isdir is defined and ansible_facts['os_family'] == "RedHat"
-  become: true
+  #- name: Enable EPEL repo on Centos 7 OSes
+  #  yum:
+  #    name: epel-release
+  #      baseurl: https://download.fedoraproject.org/pub/epel/$releasever/$basearch/
+  #  when: not cloudstat.stat.isdir is defined and ansible_facts['os_family'] == "RedHat"
+  #  become: true
 
-- name: Add docker repository
-  yum_repository:
-      name: docker-ce
-      description: docker repo
-      baseurl: https://download.docker.com/linux/rhel/docker-ce.repo
-      enabled: yes
-  tags:
-    - packages
-  become: true
+  #- name: Add docker repository
+  #  yum_repository:
+  #      name: docker-ce
+  #      description: docker repo
+  #      baseurl: https://download.docker.com/linux/rhel/docker-ce.repo
+  #      enabled: yes
+  #  tags:
+  #    - packages
+  #  become: true
   
   #- name: Add docker repository
   #  # the yum_repository method doesn't work, using get_url instead
@@ -75,20 +75,21 @@
   #  - packages
   #  become: true
   
-- name: install docker-ce
-  yum:
-    disable_gpg_check: yes
-    # remove later... allowerasing: yes
-    # remove later... nobest: yes
-    name: 
-        - docker-ce
-        - docker-ce-cli
-        - containerd.io
-        - docker-compose-plugin
-    state: present
-  tags:
-    - packages
-  become: true
+  #adding these installs to the main yum installs
+  #- name: install docker-ce
+  #  yum:
+  #    disable_gpg_check: yes
+  #    # remove later... allowerasing: yes
+  #    # remove later... nobest: yes
+  #    name: 
+  #        - docker-ce
+  #        - docker-ce-cli
+  #        - containerd.io
+  #        - docker-compose-plugin
+  #    state: present
+  #  tags:
+  #    - packages
+  #  become: true
   
 - name: install pkgs
   yum:
@@ -105,10 +106,14 @@
           #- selinux-policy
           #- selinux-policy-any
           #- selinux-policy-targeted
+          #- "@Server with GUI"
+        - docker-ce
+        - docker-ce-cli
+        - containerd.io
+        - docker-compose-plugin
         - libmng
         - xorg-x11-server-Xorg
         - "@Development Tools"
-          #- "@Server with GUI"
         - gcc
         - wget
         - ftp
@@ -125,11 +130,20 @@
         - bzip2-devel
         - libffi-devel
         - libcurl-devel
+        - tcl
+        - tk
+        - golang
+        - tree
+        - telnet
+        - tmux
+        - git
+        - libsqlite3x
+        - gitflow
+        #- libXScrnSaver
         #- libaec
         #- libaec-devel
         #- hdf5
         #- hdf5-devel
-        - libXScrnSaver
         #- geos
         #- geos-devel
         #- qt-settings
@@ -167,23 +181,14 @@
         #- freetype-devel
         #- fontconfig-devel
         #- libXft-devel
-          #- qt-devel
-        - tcl
-        - tk
+        #- qt-devel
         #- tcl-devel
         #- tk-devel
         #- ncurses-devel
         #- xz-devel
         #- motif-devel
-        - golang
         #- libsqlite3x-devel
         #- libsq3-devel
-        #- libsqlite3x
-        - tree
-        #- gitflow
-        - telnet
-        - tmux
-        - git
   tags:
     - packages
   become: true
