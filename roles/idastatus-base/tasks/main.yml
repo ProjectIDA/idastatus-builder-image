@@ -425,11 +425,20 @@
 
 - name: install docker-compose manually
   shell: |
-    mkdir -p /usr/local/bin
-    wget -o /usr/local/bin/docker-compose https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)
-    chmod +x /usr/local/bin/docker-compose
+    mkdir -p {{ local_bin_dir }}
+    wget -o {{ local_bin_dir }}/docker-compose https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)
+    chmod +x {{ local_bin_dir }}/docker-compose
     systemctl start docker.service
-
   become: yes
   tags:
      - packages
+
+
+- name: clone the docker-idastatus repo on the idastatus machine
+  git:
+      repo: 'https://github.com/ProjectIDA/docker-idastatus.git'
+      dest: '{{ src_dir }}/docker-idastatus'
+  tags:
+  - stationxmlsoftware
+  become: true
+
