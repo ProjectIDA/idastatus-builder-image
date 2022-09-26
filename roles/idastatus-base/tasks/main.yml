@@ -431,15 +431,14 @@
     systemctl start docker.service
   become: yes
   tags:
-     - packages
-
+    - packages
 
 - name: clone the docker-idastatus repo on the idastatus machine
   git:
       repo: https://github.com/ProjectIDA/docker-idastatus.git
       dest: "{{ src_dir }}"
-  accept_hostkey: true
+      accept_hostkey: true
   become: true
   tags:
-  - stationxmlsoftware
+    - stationxmlsoftware
 
