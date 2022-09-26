@@ -437,7 +437,7 @@
 - name: clone the docker-idastatus repo on the idastatus machine
   git:
       repo: https://github.com/ProjectIDA/docker-idastatus.git
-      dest: "{{ src_dir }}/docker-idastatus"
+      dest: "{{ src_dir }}"
   become: true
   tags:
   - stationxmlsoftware
