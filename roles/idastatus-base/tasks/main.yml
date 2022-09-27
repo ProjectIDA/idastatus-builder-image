@@ -422,19 +422,6 @@
     #
     #
 
-
-- name: clone the docker-idastatus repo on the idastatus machine
-  shell: |
-    touch /tmp/hi
-    #git clone https://github.com/ProjectIDA/docker-idastatus.git /usr/local/src
-    #  ansible.builtin.git:
-    #      repo: https://github.com/ProjectIDA/docker-idastatus.git
-    #      dest: "{{ src_dir }}"
-    #      accept_hostkey: true
-  become: yes
-  tags:
-    - stationxmlsoftware
-
 - name: install docker-compose manually
   shell: |
     mkdir -p {{ local_bin_dir }}
@@ -444,4 +431,13 @@
   become: yes
   tags:
     - packages
+
+- name: clone the docker-idastatus repo on the idastatus machine
+  ansible.builtin.git:
+      repo: https://github.com/ProjectIDA/docker-idastatus.git
+      dest: "{{ src_dir }}"
+      accept_hostkey: true
+  become: yes
+  tags:
+    - stationxmlsoftware
 

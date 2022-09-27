@@ -45,7 +45,7 @@
     {
         "type": "ansible",
         "extra_arguments": [ "-vv",
-            "--extra-vars", "home_location=/home git_branch=main enable_task_debugger=true"
+            "--extra-vars", "home_location=/home git_branch=main"
         ],
         "playbook_file": "./prov-idastatus-builder-image.yml"
     }]
