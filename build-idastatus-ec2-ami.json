@@ -2,7 +2,7 @@
     "variables": {
         "aws_access_key": "{{user `AWSKEY`}}",
         "aws_secret_key": "{{user `AWSSECRET`}}",
-        "ami_name": "idastatus",
+        "ami_name": "idastatus-image",
         "aws_region": "us-west-2",
         "ssh_username": "ec2-user",
         "vpc_id": "vpc-7be41303",
