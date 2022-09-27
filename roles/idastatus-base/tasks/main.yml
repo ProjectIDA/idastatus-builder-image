@@ -425,7 +425,7 @@
 
 - name: clone the docker-idastatus repo on the idastatus machine
   shell: |
-    touch /usr/local/src/hi
+    touch /tmp/hi
     #git clone https://github.com/ProjectIDA/docker-idastatus.git /usr/local/src
     #  ansible.builtin.git:
     #      repo: https://github.com/ProjectIDA/docker-idastatus.git
