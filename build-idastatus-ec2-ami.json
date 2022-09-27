@@ -44,8 +44,8 @@
     },
     {
         "type": "ansible",
-        "extra_arguments": [ "-vvv",
-            "--extra-vars", "home_location=/home git_branch=master"
+        "extra_arguments": [ "-vv",
+            "--extra-vars", "home_location=/home git_branch=main"
         ],
         "playbook_file": "./prov-idastatus-builder-image.yml"
     }]
