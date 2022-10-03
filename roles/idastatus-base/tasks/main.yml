@@ -435,7 +435,7 @@
 - name: clone the docker-idastatus repo on the idastatus machine
   ansible.builtin.git:
       repo: https://github.com/ProjectIDA/docker-idastatus.git
-      dest: "{{ src_dir }}"
+      dest: "{{ src_dir }}/docker-idastatus"
       accept_hostkey: true
   become: yes
   tags:
