@@ -33,6 +33,6 @@
         idastatus_src_version: ""  # currently unused, but should in future, pull from github "release" version
         system_hostname: idastatus
         home_root: "{{ home_location }}"
-        idastatus_home_dir : "{{ home_location }}/idadcc" # NOTE need to verify this
+        idadcc : "{{ home_location }}/idadcc" # NOTE need to verify this
         git_src_branch: "{{ git_branch }}"
 
