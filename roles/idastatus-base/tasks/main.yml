@@ -277,6 +277,7 @@
     ssh-keygen -t rsa -b 2048 -N '' -f {{ idadcc_home_dir}}/.ssh/id_rsa
     chown -R idadcc:idadcc {{ idadcc_home_dir }}/.ssh
     chmod 700 {{ idadcc_home_dir }}/.ssh
+    usermod -a -G docker idadcc
   become: yes
   tags:
     - usermods
