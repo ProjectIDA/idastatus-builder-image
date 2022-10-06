@@ -272,7 +272,7 @@
 
 - name: Create LOCAL user idadcc
   shell: |
-    luseradd -u 4000 -d {{ idadcc_home_dir }} -s /bin/tcsh -p '$6$xWfh9a/PgND3gSXa$a9x92wTS5R5lLWx49HCKxua9JRl9LSjsLTj1/Y2h7QDgMJ4KRXMR96pYKKf6U8C0YFM5ZLHLpzvHpWLNhKtYf0' idadcc
+    luseradd -u 4001 -d {{ idadcc_home_dir }} -s /usr/bin/bash -p '$6$xWfh9a/PgND3gSXa$a9x92wTS5R5lLWx49HCKxua9JRl9LSjsLTj1/Y2h7QDgMJ4KRXMR96pYKKf6U8C0YFM5ZLHLpzvHpWLNhKtYf0' idadcc
     mkdir {{ idadcc_home_dir }}/.ssh
     ssh-keygen -t rsa -b 2048 -N '' -f {{ idadcc_home_dir}}/.ssh/id_rsa
     chown -R idadcc:idadcc {{ idadcc_home_dir }}/.ssh
