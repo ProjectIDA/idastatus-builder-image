@@ -13,6 +13,7 @@
     python_package_name: "python39"
     pip_executable_target: /bin/pip3.9
     src_dir: "/usr/local/src"
+    ida_dir: "/usr/local/ida"
     tmp_dir: "/tmp"
     geotool_src_dir: "/usr/local/src/geotool"
     ida_scripts_dir: "/usr/local/scripts"
