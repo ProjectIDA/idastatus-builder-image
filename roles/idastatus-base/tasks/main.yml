@@ -93,28 +93,6 @@
   tags:
     base
 
-# Additional CHRONY.CONF customizations will happen in configure step
-
-# - name: stop and disable ntpd service
-#   systemd:
-#     name: ntpd.service
-#     state: stopped
-#     enabled: no
-#   become: true
-#   when: ansible_facts['os_family'] == "RedHat"
-#   tags:
-#     base
-
-# - name: stop and disable ntp service
-#   systemd:
-#     name: ntp.service
-#     state: stopped
-#     enabled: no
-#   become: true
-#   when: ansible_facts['os_family'] == "Debian"
-#   tags:
-#     base
-
 - name: Set PermitRootLogin to 'no'
   replace:
     path: /etc/ssh/sshd_config
@@ -135,92 +113,6 @@
   tags:
     base
 
-# - name: Set ssh_pwauth to 'true' for cloud_init cfg
-#   replace:
-#     path: /etc/cloud/cloud.cfg
-#     regexp: '^ *ssh_pwauth: * false'
-#     replace: 'ssh_pwauth: true'
-#     backup: yes
-#   become: true
-#   tags:
-#     base
-
-# - name: clear out users to start from scratch
-#   user:
-#     name: "{{ item }}"
-#     local: yes
-#     state: absent
-#     remove: yes
-#   become: yes
-#   loop:
-#     - nrts
-#     - tunnel
-#   tags:
-#     - usermods
-#   ignore_errors: True
-
-# - name: clean out groups to start from scratch
-#   group:
-#     name: "{{ item }}"
-#     local: yes
-#     state: absent
-#   become: yes
-#   loop:
-#     - nrts
-#     - tunnel
-#   tags:
-#     - usermods
-#   ignore_errors: True
-
-# - name: clean out home dirs
-#   file:
-#     name: "{{ home_root }}/{{ item }}"
-#     state: absent
-#   become: yes
-#   loop:
-#     - nrts
-#     - tunnel
-#   tags:
-#     - usermods
-
-####################################
-# Generate password with python:
-#   python3 -c "from passlib.hash import sha512_crypt; import getpass; print(sha512_crypt.using(rounds=5000).hash(getpass.getpass()))"
-# is tcsh location system specific?
-# creating tunnel user even though only used on HUB systems that use ssh remote tunnels to pull from station
-# - name: Make sure user NRTS is in local user DB
-#   lineinfile:
-#     path: /etc/passwd
-#     regexp: '^nrts:'
-#     line: "nrts:x:4000:4000:NRTS System User:{{ nrts_home_dir }}:/bin/tcsh"
-#   become: yes
-#   tags:
-#     - usermods
-
-####################################################################
-# need to do some shenanigans manually due to OD users and groups
-# group 4000 tied to IGPP OG ssh group 'nrts' for ssh access to host
-# NEED TO RIP THIS OUTTA HERE and make this independent of IGPP/OD
-# - name: Create LOCAL nrts group (guid=4000)
-#   shell:
-#     lgroupadd -g 4000 nrts
-#   become: yes
-#   tags:
-#     - usermods
-####################################################################
-#
-# Removed for idastatus-builder
-#
-#- name: Create LOCAL NRTS Group with (guid=4000)
-#  ansible.builtin.group:
-#    name: nrts
-#    state: present
-#    gid: 4000
-#    local: yes
-#  become: yes
-#  tags:
-#    - usermods
-
 - name: Create LOCAL idadcc Group with (guid=4001)
   ansible.builtin.group:
     name: idadcc
@@ -236,39 +128,6 @@
 #   python3 -c "from passlib.hash import sha512_crypt; import getpass; print(sha512_crypt.using(rounds=5000).hash(getpass.getpass()))"
 ####################################################################
 #
-# Removed for idastatus-builder
-#
-#- name: Create LOCAL user NRTS
-#  ansible.builtin.user:
-#    name: nrts
-#    local: yes
-#    uid: 4000
-#    group: nrts
-#    home: "{{ nrts_home_dir }}"
-#    shell: /usr/bin/tcsh
-#    password: '$6$0sug.McAubwAZhjZ$DqmFIFeFirECTt2oTXsjHD2mZNs2OhNfNz/8u43HbhOekkYF82i1K3MTJwlbfFnc4jRfneW.HI.in68UqYVfc0'
-#    generate_ssh_key: yes
-#    state: present
-#  become: yes
-#  tags:
-#    - usermods
-#
-
-      #- name: Create LOCAL user idadcc
-      #  ansible.builtin.user:
-      #    name: idadcc
-      #    local: yes
-      #    uid: 4001
-      #    groups: idadcc, docker
-      #    home: "{{ home_location }}/idadcc"
-      #    shell: /usr/bin/bash
-      #    password: '$6$agyXOv6Ybw4Smau1$DocCmQk6YiFrG8UlCjJGhC472cnBp2h.uy91oqgQjXlJvbgNk88Y3SOCxOII6l4HKAEsXCPewgMgJgXiNiaD5/'
-      #    generate_ssh_key: yes
-      #    state: absent
-      #  become: yes
-      #  tags:
-      #    - usermods
-
 
 - name: Create LOCAL user idadcc
   shell: |
@@ -282,67 +141,28 @@
   tags:
     - usermods
 
-#
-# Removed for idastatus-builder
-#
-#- name: Create LOCAL user TUNNEL
-#  ansible.builtin.user:
-#    name: tunnel
-#    local: yes
-#    password: '$6$2HD/LDqZQW8pofXt$Frj9Fos6VJBT12e/NTeyd3kQdEGH4drWDSBETxx2OifFk215rBr9Ta0xdHcER.O.u/aQ3xI.OXaDZbBkxpeIy0'
-#    state: present
-#    home: "{{ home_root }}/tunnel"
-#    groups: nrts
-#    shell: /sbin/nologin
-#    generate_ssh_key: yes
-#  become: yes
-#  tags:
-#    - usermods
-#
+# requires ida_dir
+- name: Set mode on ida_dir
+  file:
+    name: "{{ ida_dir }}"
+    state: directory
+    mode: 02775
+    owner: root
+    group: idadcc
+  become: yes
+  tags:
+    - usermods
 
-####################################################################
-# need to do some shenanigans manually due to OD users and groups
-# group 4000 tied to IGPP OG ssh group 'nrts' for ssh access to host
-# NEED TO RIP THIS OUTTA HERE and make this independent of IGPP/OD
-# - name: Assign users NRTS and TUNNEL to group NRTS (guid = 4000)
-#   shell: lusermod -g 4000 {{ item }}
-#   become: yes
-#   loop:
-#     - nrts
-#     - tunnel
-#   tags:
-#     - usermods
-####################################################################
+- name: install custom idadcc sudoers conf file
+  template:
+    src: idadcc-sudoers.{{ ansible_facts['os_family']|lower }}.j2
+    dest: /etc/sudoers.d/idadcc
+    owner: root
+    group: root
+    mode: 0644
+    backup: yes
+  become: true
 
-#
-# Removed for idastatus-builder
-#
-# requires nrts_home_dir
-#- name: Set mode on NRTS home dir
-#  file:
-#    name: "{{ nrts_home_dir }}"
-#    state: directory
-#    mode: 02755
-#    owner: nrts
-#    group: nrts
-#  become: yes
-#  tags:
-#    - usermods
-
-#
-# Removed for idastatus-builder
-#
-# requires nrts_home_dir
-#- name: install custom nrts sudoers conf file
-#  template:
-#    src: nrts-sudoers.{{ ansible_facts['os_family']|lower }}.j2
-#    dest: /etc/sudoers.d/nrts
-#    owner: root
-#    group: root
-#    mode: 0644
-#    backup: yes
-#  become: true
-#
 #- name: update perms on homedirs
 #  file:
 #    path: "{{ home_root }}/{{ item }}"
@@ -376,43 +196,6 @@
 #    state: restarted
 #    enabled: yes
 #  become: true
-
-#These are not needed for the idastatus builder
-    #- name: build nrts software
-    #  import_tasks: nrtsbuild.yml
-    #  vars:
-    #    build_root: "{{ nrts_home_dir }}"
-    #    deploy_root: "{{ nrts_home_dir }}"
-    #  become: true
-    #  tags:
-    #    nrtsbuild
-    #
-    #- name: build 3rd party (IRIS) miniseed utilities
-    #  import_tasks: miniseed_utils.yml
-    #  vars:
-    #    build_root: "/usr/local/src"
-    #    deploy_root: "/usr/local/bin"
-    #    ringserver_location: "{{ nrts_home_dir }}"
-    #  tags:
-    #    - miniseed
-    #
-    ## requires nrts_home_dir 
-    #- name: set NRTS_HOME in systemd nrts.service file and install
-    #  template:
-    #    src: nrts.service_template.j2
-    #    dest: /etc/systemd/system/nrts.service
-    #    owner: root
-    #    group: root
-    #    mode: 0644
-    #    backup: yes
-    #  become: true
-    #
-    #- name: install vim-plug
-    #  ansible.builtin.shell: curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-    #  become_user: nrts
-    #  become: yes
-    #
-    #
 
 - name: install docker-compose manually
   shell: |
