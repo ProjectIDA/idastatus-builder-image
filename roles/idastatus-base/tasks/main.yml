@@ -141,6 +141,13 @@
   tags:
     - usermods
 
+- name: add ec2-user to idadcc group
+  shell: |
+    usermod -a -G idadcc ec2-user
+  become: yes
+  tags:
+    - usermods
+
 # requires ida_dir
 - name: Set mode on ida_dir
   file:
@@ -149,6 +156,28 @@
     mode: 02775
     owner: root
     group: idadcc
+  become: yes
+  tags:
+    - usermods
+
+- name: Set mode on fixtures dir
+  file:
+    name: "{{ ida_dir }}/idastatus/stations/fixtures"
+    state: directory
+    mode: 02775
+    owner: root
+    group: idadcc
+  become: yes
+  tags:
+    - usermods
+
+- name: Set mode on docker-idastatus
+  file:
+    name: "{{ ida_dir }}/docker-idastatus"
+    state: directory
+    owner: root
+    group: idadcc
+    recurse: yes
   become: yes
   tags:
     - usermods
