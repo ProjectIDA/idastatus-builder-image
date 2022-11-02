@@ -191,50 +191,42 @@
     mode: 0644
     backup: yes
   become: true
+  tags:
+    - systemmods
 
-#- name: update perms on homedirs
-#  file:
-#    path: "{{ home_root }}/{{ item }}"
-#    state: directory
-#    owner: "{{ item }}"
-#    group: "{{ item }}"
-#    mode: "g+rx"
-#  become: true
-#  tags:
-#    nrtsbuild
-#  loop:
-#    - nrts
-#    - tunnel
-#
-## requires nrts_home_dir 
-## MAY NEED TO CUSTOMIZE FOR DEBIAN
-#- name: install custom NRTS rsyslog conf
-#  template:
-#    src: nrts-rsyslog.j2
-#    dest: /etc/rsyslog.d/nrts.conf
-#    owner: root
-#    group: root
-#    mode: 0644
-#    backup: yes
-#  become: true
-#
-## MAY NEED TO CUSTOMIZE FOR DEBIAN
-#- name: make sure rsyslogd running and enabled with nrts custom conf
-#  systemd:
-#    name: rsyslog
-#    state: restarted
-#    enabled: yes
-#  become: true
+- name: install systemd docker.service file
+  template:
+    src: docker.service_template.j2
+    dest: /etc/systemd/system/docker.service
+    owner: root
+    group: root
+    mode: 0644
+    backup: yes
+  become: true
+  tags:
+    - systemmods
+
+- name: enable service docker
+  ansible.builtin.systemd:
+    name: docker
+    enabled: yes
+  become: true
+  tags:
+    - systemmods
 
 - name: install docker-compose manually
   shell: |
     mkdir -p {{ local_bin_dir }}
-    wget -o {{ local_bin_dir }}/docker-compose https://github.com/docker/compose/releases/latest/docker-compose-$(uname -s)-$(uname -m)
-    chmod g+x {{ local_bin_dir }}/docker-compose
-    systemctl enable docker.service
+    DOCKER_COMPOSE_REPO="docker/compose";
+    DOCKER_COMPOSE_BINARY=$(echo "docker-compose-$(uname -s)-$(uname -m)" | tr '[:upper:]' '[:lower:]');
+    DOCKER_COMPOSE_VERSION=$(curl -fsSL -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/${DOCKER_COMPOSE_REPO}/releases/latest" | jq -r ".tag_name");
+    curl -fsSLO "https://github.com/${DOCKER_COMPOSE_REPO}/releases/download/${DOCKER_COMPOSE_VERSION}/${DOCKER_COMPOSE_BINARY}{,.sha256}" && \
+    sha256sum --status -c ${DOCKER_COMPOSE_BINARY}.sha256 && rm ${DOCKER_COMPOSE_BINARY}.sha256 && \
+    mv ${DOCKER_COMPOSE_BINARY} {{ local_bin_dir }}/docker-compose && \
+    chmod +x {{ local_bin_dir }}/docker-compose
   become: yes
   tags:
-    - packages
+    - systemmods
 
 - name: clone the docker-idastatus repo on the idastatus machine
   ansible.builtin.git:
