@@ -40,6 +40,9 @@
         - libsqlite3x
         - gitflow
         - jq
+        - certbot
+        - python2-certbot-nginx.noarch
+        - nginx
   tags:
     - packages
   become: true
