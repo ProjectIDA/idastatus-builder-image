@@ -239,7 +239,7 @@
 
 - name: build docker containers
   shell: |
-    cd {{ local_bin_dir }}/docker-idastatus
+    cd "{{ ida_dir }}/docker-idastatus"
     sudo -u idadcc make build
   become: yes
   tags:
