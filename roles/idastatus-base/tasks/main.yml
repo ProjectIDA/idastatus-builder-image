@@ -137,6 +137,7 @@
     chown -R idadcc:idadcc {{ idadcc_home_dir }}/.ssh
     chmod 700 {{ idadcc_home_dir }}/.ssh
     usermod -a -G docker idadcc
+    printf "\n\nexport PATH=/usr/local/bin:$PATH" >> {{ idadcc_home_dir }}/.bashrc
   become: yes
   tags:
     - usermods
