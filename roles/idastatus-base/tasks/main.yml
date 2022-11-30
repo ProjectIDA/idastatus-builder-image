@@ -239,35 +239,27 @@
   tags:
     - stationxmlsoftware
 
-- name:  check make
-  shell: |
-    cd "{{ ida_dir }}/docker-idastatus"
-    sudo -u idadcc echo `which make`
-  become: yes
-  tags:
-    - stationxmlsoftware
-
 - name:  check docker-compose
   shell: |
     cd "{{ ida_dir }}/docker-idastatus"
-    sudo -u idadcc echo `which docker-compose`
-  become: yes
+    echo `which docker-compose`
+  become_user: idadcc
   tags:
     - stationxmlsoftware
 
 - name:  check PATH
   shell: |
     cd "{{ ida_dir }}/docker-idastatus"
-    sudo -u idadcc echo $PATH
-  become: yes
+    echo $PATH
+  become_user: idadcc
   tags:
     - stationxmlsoftware
 
 - name: build docker containers
   shell: |
     cd "{{ ida_dir }}/docker-idastatus"
-    sudo -u idadcc /bin/make build
-  become: yes
+    /bin/make build
+  become_user: idadcc
   tags:
     - stationxmlsoftware
 
