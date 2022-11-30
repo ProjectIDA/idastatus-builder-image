@@ -137,7 +137,7 @@
     chown -R idadcc:idadcc {{ idadcc_home_dir }}/.ssh
     chmod 700 {{ idadcc_home_dir }}/.ssh
     usermod -a -G docker idadcc
-    printf "\n\nexport PATH=/usr/local/bin:$PATH" >> {{ idadcc_home_dir }}/.bashrc
+    printf "\n\nexport PATH=/usr/local/bin:/bin:$PATH" >> {{ idadcc_home_dir }}/.bashrc
   become: yes
   tags:
     - usermods
@@ -241,8 +241,7 @@
 - name: build docker containers
   shell: |
     cd "{{ ida_dir }}/docker-idastatus"
-    sudo -u idadcc echo $PATH
-    #sudo -u idadcc make build
+    sudo -u idadcc make build
   become: yes
   tags:
     - stationxmlsoftware
