@@ -138,6 +138,7 @@
     chmod 700 {{ idadcc_home_dir }}/.ssh
     usermod -a -G docker idadcc
     printf "\n\nexport PATH=/usr/local/bin:/bin:$PATH" >> {{ idadcc_home_dir }}/.bashrc
+    printf "\n\nexport PATH=/usr/local/bin:/bin:$PATH" >> {{ idadcc_home_dir }}/.bash_profile
   become: yes
   tags:
     - usermods
@@ -242,6 +243,22 @@
   shell: |
     cd "{{ ida_dir }}/docker-idastatus"
     sudo -u idadcc echo `which make`
+  become: yes
+  tags:
+    - stationxmlsoftware
+
+- name:  check docker-compose
+  shell: |
+    cd "{{ ida_dir }}/docker-idastatus"
+    sudo -u idadcc echo `which docker-compose`
+  become: yes
+  tags:
+    - stationxmlsoftware
+
+- name:  check PATH
+  shell: |
+    cd "{{ ida_dir }}/docker-idastatus"
+    sudo -u idadcc echo $PATH
   become: yes
   tags:
     - stationxmlsoftware
