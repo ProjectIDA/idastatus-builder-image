@@ -241,7 +241,8 @@
 - name: build docker containers
   shell: |
     cd "{{ ida_dir }}/docker-idastatus"
-    sudo -u idadcc /bin/make build
+    echo `which make`
+    #sudo -u idadcc /bin/make build
   become: yes
   tags:
     - stationxmlsoftware
