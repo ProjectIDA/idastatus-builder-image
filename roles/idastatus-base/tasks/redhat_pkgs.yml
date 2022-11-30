@@ -15,6 +15,7 @@
         - xorg-x11-server-Xorg
         - "@Development Tools"
         - gcc
+        - make
         - wget
         - ftp
         - libkadm5
