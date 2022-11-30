@@ -212,6 +212,7 @@
   ansible.builtin.systemd:
     name: docker
     enabled: yes
+    state: started
   become: true
   tags:
     - systemmods
@@ -243,6 +244,7 @@
   shell: |
     cd "{{ ida_dir }}/docker-idastatus"
     echo `which docker-compose`
+  become: yes
   become_user: idadcc
   tags:
     - stationxmlsoftware
@@ -251,6 +253,7 @@
   shell: |
     cd "{{ ida_dir }}/docker-idastatus"
     echo $PATH
+  become: yes
   become_user: idadcc
   tags:
     - stationxmlsoftware
@@ -259,6 +262,7 @@
   shell: |
     cd "{{ ida_dir }}/docker-idastatus"
     /bin/make build
+  become: yes
   become_user: idadcc
   tags:
     - stationxmlsoftware
