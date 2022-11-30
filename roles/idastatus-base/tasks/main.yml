@@ -267,7 +267,7 @@
 - name: build docker containers
   shell: |
     cd "{{ ida_dir }}/docker-idastatus"
-    /bin/make build
+    #/bin/make build
   become_user: idadcc
   tags:
     - stationxmlsoftware
