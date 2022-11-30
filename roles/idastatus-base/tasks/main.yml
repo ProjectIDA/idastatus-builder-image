@@ -238,11 +238,18 @@
   tags:
     - stationxmlsoftware
 
+- name:  check make
+  shell: |
+    cd "{{ ida_dir }}/docker-idastatus"
+    sudo -u idadcc echo `which make`
+  become: yes
+  tags:
+    - stationxmlsoftware
+
 - name: build docker containers
   shell: |
     cd "{{ ida_dir }}/docker-idastatus"
-    echo `which make`
-    #sudo -u idadcc /bin/make build
+    sudo -u idadcc /bin/make build
   become: yes
   tags:
     - stationxmlsoftware
