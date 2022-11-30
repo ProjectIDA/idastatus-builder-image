@@ -244,7 +244,6 @@
   shell: |
     cd "{{ ida_dir }}/docker-idastatus"
     echo `which docker-compose`
-  become: yes
   become_user: idadcc
   tags:
     - stationxmlsoftware
@@ -253,7 +252,14 @@
   shell: |
     cd "{{ ida_dir }}/docker-idastatus"
     echo $PATH
-  become: yes
+  become_user: idadcc
+  tags:
+    - stationxmlsoftware
+
+- name:  check that docker is running
+  shell: |
+    cd "{{ ida_dir }}/docker-idastatus"
+    echo `ps -ef | grep docker`
   become_user: idadcc
   tags:
     - stationxmlsoftware
@@ -262,7 +268,6 @@
   shell: |
     cd "{{ ida_dir }}/docker-idastatus"
     /bin/make build
-  become: yes
   become_user: idadcc
   tags:
     - stationxmlsoftware
