@@ -253,11 +253,12 @@
     - stationxmlsoftware
 
 - name:  check PATH
+  become: yes
+  become_user: idadcc
   shell: |
     cd "{{ ida_dir }}/docker-idastatus"
     id
     echo $PATH
-  become_user: idadcc
   tags:
     - stationxmlsoftware
 
@@ -266,24 +267,27 @@
     cd "{{ ida_dir }}/docker-idastatus"
     id
     echo `ps -ef | grep docker`
+  become: yes
   become_user: idadcc
   tags:
     - stationxmlsoftware
 
 - name:  check docker socket permissions
+  become: yes
+  become_user: idadcc
   shell: |
     id
     ls -l /var/run/docker.sock
-  become_user: idadcc
   tags:
     - stationxmlsoftware
 
 - name: build docker containers
-  shell: |
-    sudo su - idadcc
-    cd "{{ ida_dir }}/docker-idastatus"
-    /bin/make build
+  become: yes
   become_user: idadcc
+  shell: |
+    cd "{{ ida_dir }}/docker-idastatus"
+    export PATH=/usr/local/bin:$PATH
+    /bin/make build
   tags:
     - stationxmlsoftware
 
