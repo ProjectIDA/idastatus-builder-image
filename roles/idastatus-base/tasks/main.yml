@@ -242,11 +242,13 @@
     - stationxmlsoftware
 
 - name:  check docker-compose
+  become: yes
+  become_user: idadcc
   shell: |
     cd "{{ ida_dir }}/docker-idastatus"
     id
     echo `which docker-compose`
-  become_user: idadcc
+    echo $PATH
   tags:
     - stationxmlsoftware
 
