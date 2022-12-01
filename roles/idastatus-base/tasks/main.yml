@@ -143,9 +143,10 @@
   tags:
     - usermods
 
-- name: add ec2-user to idadcc group
+- name: add ec2-user to idadcc and docker groups
   shell: |
     usermod -a -G idadcc ec2-user
+    usermod -a -G docker ec2-user
   become: yes
   tags:
     - usermods
