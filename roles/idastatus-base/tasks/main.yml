@@ -264,11 +264,19 @@
   tags:
     - stationxmlsoftware
 
-- name: build docker containers
+- name:  check docker socket permissions
   shell: |
-    cd "{{ ida_dir }}/docker-idastatus"
-    #/bin/make build
+    id
+    ls -l /var/run/docker.sock
   become_user: idadcc
   tags:
     - stationxmlsoftware
+
+      #- name: build docker containers
+      #  shell: |
+      #    cd "{{ ida_dir }}/docker-idastatus"
+      #    /bin/make build
+      #  become_user: idadcc
+      #  tags:
+      #    - stationxmlsoftware
 
