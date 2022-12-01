@@ -278,6 +278,7 @@
 
 - name: build docker containers
   shell: |
+    sudo su - idadcc
     cd "{{ ida_dir }}/docker-idastatus"
     /bin/make build
   become_user: idadcc
