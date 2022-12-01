@@ -244,6 +244,7 @@
 - name:  check docker-compose
   shell: |
     cd "{{ ida_dir }}/docker-idastatus"
+    id
     echo `which docker-compose`
   become_user: idadcc
   tags:
@@ -252,6 +253,7 @@
 - name:  check PATH
   shell: |
     cd "{{ ida_dir }}/docker-idastatus"
+    id
     echo $PATH
   become_user: idadcc
   tags:
@@ -260,6 +262,7 @@
 - name:  check that docker is running
   shell: |
     cd "{{ ida_dir }}/docker-idastatus"
+    id
     echo `ps -ef | grep docker`
   become_user: idadcc
   tags:
