@@ -237,6 +237,8 @@
       repo: https://github.com/ProjectIDA/docker-idastatus.git
       dest: "{{ ida_dir }}/docker-idastatus"
       accept_hostkey: true
+      single_branch: yes
+      version: feature/run_on_aws
   become: yes
   tags:
     - stationxmlsoftware
