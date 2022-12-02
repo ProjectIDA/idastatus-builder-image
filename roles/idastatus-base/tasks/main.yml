@@ -260,3 +260,13 @@
   tags:
     - stationxmlsoftware
 
+- name: run docker containers
+  shell: |
+    cd "{{ ida_dir }}/docker-idastatus"
+    export PATH=/usr/local/bin:$PATH
+    /bin/make run
+  become: yes
+  become_user: idadcc
+  tags:
+    - stationxmlsoftware
+
