@@ -243,6 +243,15 @@
   tags:
     - stationxmlsoftware
 
+- name: make ud-local.sh script executable
+  ansible.builtin.file:
+      path: "{{ ida_dir }}/docker-idastatus/ud-local.sh"
+      state: file
+      mode: '0775'
+  become: yes
+  tags:
+    - stationxmlsoftware
+
 - name:  check that docker is running
   shell: |
     cd "{{ ida_dir }}/docker-idastatus"
