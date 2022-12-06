@@ -32,7 +32,8 @@
         },
         "run_tags": {
             "Name": "packer-idastatus-build-image"
-        }
+        },
+        "force_delete_snapshot": true
     }],
     "provisioners": [{
         "type": "shell",
