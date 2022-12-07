@@ -174,25 +174,6 @@
   tags:
     - usermods
 
-- name: Set mode on fixtures dir
-  file:
-    name: "{{ ida_dir }}/idastatus/stations/fixtures"
-    state: directory
-    mode: 02775
-    owner: root
-    group: idadcc
-  become: yes
-  tags:
-    - usermods
-
-- name: Set mode on directories in docker-idastatus
-  shell: |
-    cd "{{ ida_dir }}/docker-idastatus"
-    chmod -R g+w idastatus
-  become: yes
-  tags:
-    - systemmods
-
 - name: install custom idadcc sudoers conf file
   template:
     src: idadcc-sudoers.{{ ansible_facts['os_family']|lower }}.j2
@@ -247,6 +228,14 @@
       accept_hostkey: true
       single_branch: yes
       version: feature/run_on_aws
+  become: yes
+  tags:
+    - stationxmlsoftware
+
+- name: Set mode on directories in docker-idastatus
+  shell: |
+    cd "{{ ida_dir }}/docker-idastatus"
+    chmod -R g+w idastatus
   become: yes
   tags:
     - stationxmlsoftware
