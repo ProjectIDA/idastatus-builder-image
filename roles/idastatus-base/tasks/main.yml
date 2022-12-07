@@ -163,6 +163,17 @@
   tags:
     - usermods
 
+- name: Set mode on ida_dir
+  file:
+    name: "{{ ida_dir }}"
+    state: directory
+    mode: 02775
+    owner: root
+    group: idadcc
+  become: yes
+  tags:
+    - usermods
+
 - name: Set mode on fixtures dir
   file:
     name: "{{ ida_dir }}/idastatus/stations/fixtures"
@@ -174,16 +185,15 @@
   tags:
     - usermods
 
-- name: Set mode on docker-idastatus
+- name: Set mode on directories in docker-idastatus
   file:
     name: "{{ ida_dir }}/docker-idastatus"
     state: directory
-    owner: root
-    group: idadcc
+    mode: g+w
     recurse: yes
   become: yes
   tags:
-    - usermods
+    - systemmods
 
 - name: install custom idadcc sudoers conf file
   template:
