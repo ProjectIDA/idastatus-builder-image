@@ -186,11 +186,9 @@
     - usermods
 
 - name: Set mode on directories in docker-idastatus
-  file:
-    name: "{{ ida_dir }}/docker-idastatus"
-    state: directory
-    mode: g+w
-    recurse: yes
+  shell: |
+    cd "{{ ida_dir }}/docker-idastatus"
+    chmod -R g+w idastatus
   become: yes
   tags:
     - systemmods
