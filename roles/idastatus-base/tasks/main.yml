@@ -139,6 +139,8 @@
     usermod -a -G docker idadcc
     printf "\n\nexport PATH=/usr/local/bin:/bin:$PATH" >> {{ idadcc_home_dir }}/.bashrc
     printf "\n\nexport PATH=/usr/local/bin:/bin:$PATH" >> {{ idadcc_home_dir }}/.bash_profile
+    printf "\n\nexport POSTGRES_USER_PASSWORD='YGYglT+StPC7'" >> {{ idadcc_home_dir }}/.bashrc
+    printf "\n\nexport POSTGRES_USER_PASSWORD='YGYglT+StPC7'" >> {{ idadcc_home_dir }}/.bash_profile
   become: yes
   tags:
     - usermods
