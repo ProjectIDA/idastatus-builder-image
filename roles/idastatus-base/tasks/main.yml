@@ -139,8 +139,6 @@
     usermod -a -G docker idadcc
     printf "\n\nexport PATH=/usr/local/bin:/bin:$PATH" >> {{ idadcc_home_dir }}/.bashrc
     printf "\n\nexport PATH=/usr/local/bin:/bin:$PATH" >> {{ idadcc_home_dir }}/.bash_profile
-    printf "\n\nexport POSTGRES_USER_PASSWORD='YGYglT+StPC7'" >> {{ idadcc_home_dir }}/.bashrc
-    printf "\n\nexport POSTGRES_USER_PASSWORD='YGYglT+StPC7'" >> {{ idadcc_home_dir }}/.bash_profile
   become: yes
   tags:
     - usermods
@@ -250,6 +248,15 @@
   become: yes
   tags:
     - stationxmlsoftware
+
+- name: set postgres password in environment variable
+  shell: |
+    PASSWORD=$(aws_secret_pgsql_pass.py);
+    printf "\n\nexport POSTGRES_USER_PASSWORD='${PASSWORD}'" >> {{ idadcc_home_dir }}/.bashrc
+    printf "\n\nexport POSTGRES_USER_PASSWORD='${PASSWORD}'" >> {{ idadcc_home_dir }}/.bash_profile
+  become: yes
+  tags:
+    - usermods
 
 - name:  check that docker is running
   shell: |
