@@ -47,7 +47,7 @@
     {
         "type": "ansible",
         "extra_arguments": [ "-vv",
-            "--extra-vars", "home_location=/home git_branch=main pg_usr_PW={{aws_postgres_user_pw}}"
+            "--extra-vars", "home_location=/home git_branch=main pg_usr_PW=aws_postgres_user_pw"
         ],
         "ansible_ssh_extra_args":"-o IdentitiesOnly=yes -o HostkeyAlgorithms=ssh-rsa -o PubkeyAcceptedAlgorithms=ssh-rsa",
         "playbook_file": "./prov-idastatus-builder-image.yml"
