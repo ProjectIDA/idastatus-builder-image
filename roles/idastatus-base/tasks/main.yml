@@ -251,10 +251,8 @@
 
 - name: set postgres password in environment variable
   shell: |
-    cd "{{ ida_dir }}/docker-idastatus"
-    PASSWORD=$(aws_secret_pgsql_pass.py);
-    printf "\n\nexport POSTGRES_USER_PASSWORD='${PASSWORD}'" >> {{ idadcc_home_dir }}/.bashrc
-    printf "\n\nexport POSTGRES_USER_PASSWORD='${PASSWORD}'" >> {{ idadcc_home_dir }}/.bash_profile
+    printf "\n\nexport POSTGRES_USER_PASSWORD='${pg_usr_pw}'" >> {{ idadcc_home_dir }}/.bashrc
+    printf "\n\nexport POSTGRES_USER_PASSWORD='${pg_usr_pw}'" >> {{ idadcc_home_dir }}/.bash_profile
   become: yes
   tags:
     - usermods
