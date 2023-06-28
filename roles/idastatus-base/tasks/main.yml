@@ -249,10 +249,13 @@
   tags:
     - stationxmlsoftware
 
+- debug:
+    msg: "pg_usr_pw: {{ pg_usr_pw }}"
+
 - name: set postgres password in environment variable
   shell: |
-    printf "\n\nexport POSTGRES_USER_PASSWORD='${pg_usr_pw}'" >> {{ idadcc_home_dir }}/.bashrc
-    printf "\n\nexport POSTGRES_USER_PASSWORD='${pg_usr_pw}'" >> {{ idadcc_home_dir }}/.bash_profile
+    printf "\n\nexport POSTGRES_USER_PASSWORD={{ pg_usr_pw }}" >> {{ idadcc_home_dir }}/.bashrc
+    printf "\n\nexport POSTGRES_USER_PASSWORD={{ pg_usr_pw }}" >> {{ idadcc_home_dir }}/.bash_profile
   become: yes
   tags:
     - usermods
