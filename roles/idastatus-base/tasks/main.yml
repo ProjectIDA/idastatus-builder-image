@@ -269,9 +269,6 @@
   tags:
     - stationxmlsoftware
 
-- debug:
-    msg: "POSTGRES_USER_PASSWORD: {{ POSTGRES_USER_PASSWORD }}"
-
 - name: build docker containers
   shell: |
     cd "{{ ida_dir }}/docker-idastatus"
