@@ -2,8 +2,8 @@
     "variables": {
         "aws_access_key": "{{user `AWSKEY`}}",
         "aws_secret_key": "{{user `AWSSECRET`}}",
-        "aws_postgres_ida_pw": "{{user `AWSPGIDAPASS`}}",
-        "aws_postgres_admin_pw": "{{user `AWSPGADMINPASS`}}",
+        "POSTGRES_IDA_PASSWORD": "{{user `POSTGRES_IDA_PASSWORD`}}",
+        "POSTGRES_ADMIN_PASSWORD": "{{user `POSTGRES_ADMIN_PASSWORD`}}",
         "ami_name": "idastatus-image",
         "aws_region": "us-west-2",
         "ssh_username": "ec2-user",
@@ -48,7 +48,7 @@
     {
         "type": "ansible",
         "extra_arguments": [ "-vv",
-            "--extra-vars", "home_location=/home git_branch=main pg_ida_pw={{user `aws_postgres_ida_pw`}} pg_admin_pw={{user `aws_postgres_admin_pw`}}"
+            "--extra-vars", "home_location=/home git_branch=main POSTGRES_IDA_PASSWORD={{user `POSTGRES_IDA_PASSWORD`}} POSTGRES_ADMIN_PASSWORD={{user `POSTGRES_ADMIN_PASSWORD`}}"
         ],
         "ansible_ssh_extra_args":"-o IdentitiesOnly=yes -o HostkeyAlgorithms=ssh-rsa -o PubkeyAcceptedAlgorithms=ssh-rsa",
         "playbook_file": "./prov-idastatus-builder-image.yml"

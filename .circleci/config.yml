@@ -43,10 +43,10 @@ jobs:
           command: ls -l ~/.ssh/
       - run: 
           name: Validate aws ami config
-          command: /usr/local/packer validate  -var "AWSKEY=${aws_access_key_id}" -var "AWSSECRET=${aws_secret_access_key}" -var "AWSPGUSERPASS=${aws_postgres_user_pw}" build-idastatus-ec2-ami.json
+          command: /usr/local/packer validate  -var "AWSKEY=${aws_access_key_id}" -var "AWSSECRET=${aws_secret_access_key}" -var "POSTGRES_IDA_PASSWORD=${POSTGRES_IDA_PASSWORD}"  -var "POSTGRES_ADMIN_PASSWORD=${POSTGRES_ADMIN_PASSWORD}"build-idastatus-ec2-ami.json
       - run:
           name: Build aws ami image
-          command: /usr/local/packer build -var "AWSKEY=${aws_access_key_id}" -var "AWSSECRET=${aws_secret_access_key}" -var "AWSPGUSERPASS=${aws_postgres_user_pw}" build-idastatus-ec2-ami.json 
+          command: /usr/local/packer build -var "AWSKEY=${aws_access_key_id}" -var "AWSSECRET=${aws_secret_access_key}" -var "POSTGRES_IDA_PASSWORD=${POSTGRES_IDA_PASSWORD}" -var "POSTGRES_ADMIN_PASSWORD=${POSTGRES_ADMIN_PASSWORD}" build-idastatus-ec2-ami.json 
 
 
 #          "owners": ["863634277693"],

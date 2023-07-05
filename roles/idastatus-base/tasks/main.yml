@@ -250,15 +250,15 @@
     - stationxmlsoftware
 
 - debug:
-    msg: "pg_ida_pw: {{ pg_ida_pw }}"
-    msg: "pg_admin_pw: {{ pg_admin_pw }}"
+    msg: "POSTGRES_IDA_PASSWORD: {{ POSTGRES_IDA_PASSWORD }}"
+    msg: "POSTGRES_ADMIN_PASSWORD: {{ POSTGRES_ADMIN_PASSWORD }}"
 
 - name: set postgres password in environment variable
   shell: |
-    printf "\n\nexport POSTGRES_IDA_PASSWORD=\"{{ pg_ida_pw }}\"" >> {{ idadcc_home_dir }}/.bashrc
-    printf "\n\nexport POSTGRES_ADMIN_PASSWORD=\"{{ pg_admin_pw }}\"" >> {{ idadcc_home_dir }}/.bashrc
-    printf "\n\nexport POSTGRES_IDA_PASSWORD=\"{{ pg_ida_pw }}\"" >> {{ idadcc_home_dir }}/.bash_profile
-    printf "\n\nexport POSTGRES_ADMIN_PASSWORD=\"{{ pg_admin_pw }}\"" >> {{ idadcc_home_dir }}/.bash_profile
+    printf "\n\nexport POSTGRES_IDA_PASSWORD=\"{{ POSTGRES_IDA_PASSWORD }}\"" >> {{ idadcc_home_dir }}/.bashrc
+    printf "\n\nexport POSTGRES_ADMIN_PASSWORD=\"{{ POSTGRES_ADMIN_PASSWORD }}\"" >> {{ idadcc_home_dir }}/.bashrc
+    printf "\n\nexport POSTGRES_IDA_PASSWORD=\"{{ POSTGRES_IDA_PASSWORD }}\"" >> {{ idadcc_home_dir }}/.bash_profile
+    printf "\n\nexport POSTGRES_ADMIN_PASSWORD=\"{{ POSTGRES_ADMIN_PASSWORD }}\"" >> {{ idadcc_home_dir }}/.bash_profile
   become: yes
   tags:
     - usermods
