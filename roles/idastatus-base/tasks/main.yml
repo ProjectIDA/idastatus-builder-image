@@ -276,9 +276,9 @@
   shell: |
     cd "{{ ida_dir }}/docker-idastatus"
     export PATH=/usr/local/bin:$PATH
-    docker-compose --file docker-compose.aws.yml -e POSTGRES_IDA_PASSWORD="{{ POSTGRES_IDA_PASSWORD }}" \
-                                                 -e POSTGRES_ADMIN_PASSWORD="{{ POSTGRES_ADMIN_PASSWORD }}" \
-                                                 build web db web_migrations web_proxies
+    docker-compose --file docker-compose.aws.yml build -e POSTGRES_IDA_PASSWORD="{{ POSTGRES_IDA_PASSWORD }}" \
+                                                       -e POSTGRES_ADMIN_PASSWORD="{{ POSTGRES_ADMIN_PASSWORD }}" \
+                                                       web db web_migrations web_proxies
   become: yes
   become_user: idadcc
   tags:
