@@ -31,7 +31,7 @@ jobs:
           command: sudo apt-add-repository --yes ppa:ansible/ansible
       - run:
           name: Install Ansible
-          command: sudo apt-get install ansible-core=2.9
+          command: sudo apt-get install ansible=7
       - run:
           name: check ansible version
           command: ansible-playbook --version
