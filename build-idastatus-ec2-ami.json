@@ -51,6 +51,8 @@
         "extra_arguments": [ "-vv",
             "--extra-vars", "home_location=/home git_branch=main POSTGRES_IDA_PASSWORD={{user `POSTGRES_IDA_PASSWORD`}} POSTGRES_ADMIN_PASSWORD={{user `POSTGRES_ADMIN_PASSWORD`}} POSTGRES_PASSWORD={{user `POSTGRES_ADMIN_PASSWORD`}}"
         ],
+        "ansible_ssh_extra_args": [" -o IdentitiesOnly=yes", " -o HostkeyAlgorithms=ssh-rsa", " -o PubkeyAcceptedKeyTypes=ssh-rsa"
+        ],
         "playbook_file": "./prov-idastatus-builder-image.yml"
     }]
 }
