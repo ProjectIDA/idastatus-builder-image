@@ -251,6 +251,8 @@
 
 - debug:
     msg: "POSTGRES_IDA_PASSWORD: {{ POSTGRES_IDA_PASSWORD }}"
+
+- debug:
     msg: "POSTGRES_ADMIN_PASSWORD: {{ POSTGRES_ADMIN_PASSWORD }}"
 
 - name: set postgres password in environment variable
