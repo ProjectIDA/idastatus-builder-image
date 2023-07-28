@@ -24,17 +24,17 @@ jobs:
           name: apt-get Update
           command: sudo apt-get update
       - run:
-          name: apt list ansible
-          command: sudo apt list ansible
-      - run:
-          name: apt-cache policy
-          command: sudo apt-cache policy ansible
-      - run:
           name: Install software-properties-common
           command: sudo apt-get install software-properties-common
       - run:
           name: install ansible apt-get repo
           command: sudo apt-add-repository --yes ppa:ansible/ansible
+      - run:
+          name: apt list ansible
+          command: sudo apt list ansible
+      - run:
+          name: apt-cache policy
+          command: sudo apt-cache policy ansible
       - run:
           name: Install Ansible
           command: sudo apt-get install ansible
