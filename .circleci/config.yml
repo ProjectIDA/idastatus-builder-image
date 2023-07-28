@@ -27,6 +27,9 @@ jobs:
           name: apt list ansible
           command: sudo apt list ansible
       - run:
+          name: apt-cache policy
+          command: sudo apt-cache policy ansible
+      - run:
           name: Install software-properties-common
           command: sudo apt-get install software-properties-common
       - run:
