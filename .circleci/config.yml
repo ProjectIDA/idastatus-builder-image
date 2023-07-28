@@ -24,8 +24,8 @@ jobs:
           name: apt-get Update
           command: sudo apt-get update
       - run:
-          name: apt-cache madison ansible
-          command: sudo apt-cache madison ansible
+          name: apt list ansible
+          command: sudo apt list ansible
       - run:
           name: Install software-properties-common
           command: sudo apt-get install software-properties-common
