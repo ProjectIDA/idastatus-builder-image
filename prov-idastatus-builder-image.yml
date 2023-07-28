@@ -29,6 +29,9 @@
     - debug:
         msg: "git_branch: {{ git_branch }}"
 
+    - debug:
+        msg: "ansible all -m ping"
+
     - import_role:
         name: idastatus-base
       vars:
