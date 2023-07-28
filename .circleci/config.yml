@@ -34,9 +34,12 @@ jobs:
           command: sudo apt-add-repository --yes ppa:ansible/ansible
       - run:
           name: Install Ansible
-          command: sudo apt-get install ansible=2.10.7
+          command: sudo apt-get install ansible
       - run:
           name: check ansible version
+          command: ansible --version
+      - run:
+          name: check ansible-playbook version
           command: ansible-playbook --version
       - add_ssh_keys:
           fingerprints:
