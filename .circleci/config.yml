@@ -45,7 +45,7 @@ jobs:
       - run:
           name: add focal repo to sources.list
           command: |
-            sudo echo "\ndeb https://ppa.launchpadcontent.net/git-core/ppa/ubuntu/ focal main" >> /tmp/focal.list
+            sudo echo "deb https://ppa.launchpadcontent.net/git-core/ppa/ubuntu/ focal main" >> /tmp/focal.list
             sudo cat /tmp/focal.list >> /etc/apt/sources.list.d/git-core-ubuntu-ppa-jammy.list
       - run:
           name: debugging
