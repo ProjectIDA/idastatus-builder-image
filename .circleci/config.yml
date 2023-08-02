@@ -30,11 +30,12 @@ jobs:
           name: debugging
           command: cat /etc/apt/sources.list.d/git-core-ubuntu-ppa-jammy.list
       - run:
-          name: check perms on sources.list.d
-          command: sudo ls -ld /etc/apt/sources.list.d/
-      - run:
-          name: check perms on contents of sources.list.d
-          command: sudo ls -l /etc/apt/sources.list.d/*
+          name: check perms
+          command: |
+            sudo ls -ld /etc
+            sudo ls -ld /etc/apt
+            sudo ls -ld /etc/apt/sources.list.d
+            sudo ls -l /etc/apt/sources.list.d/*
       - run:
           name: add focal repo to sources.list
           command: sudo echo "\ndeb https://ppa.launchpadcontent.net/git-core/ppa/ubuntu/ focal main" >> /etc/apt/sources.list.d/git-core-ubuntu-ppa-jammy.list
