@@ -21,7 +21,7 @@ jobs:
             unzip /tmp/packer-${PACKER_VER}.zip -d /tmp/packer
             sudo mv /tmp/packer/* /usr/local/
       - run:
-          name: apt-get Update
+          name: apt-get update
           command: sudo apt-get update
       - run:
           name: Install software-properties-common
@@ -33,7 +33,6 @@ jobs:
           name: check and set perms
           command: |
             whoami
-            echo $USER
             sudo ls -ld /etc
             sudo ls -ld /etc/apt
             sudo ls -ld /etc/apt/sources.list.d
@@ -50,6 +49,9 @@ jobs:
       - run:
           name: debugging
           command: cat /etc/apt/sources.list.d/git-core-ubuntu-ppa-jammy.list
+      - run:
+          name: apt-get update
+          command: sudo apt-get update
       - run:
           name: apt list ansible
           command: sudo apt list ansible
