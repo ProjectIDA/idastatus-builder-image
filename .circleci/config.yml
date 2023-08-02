@@ -28,7 +28,7 @@ jobs:
           command: sudo apt-get install software-properties-common
       - run:
           name: debugging
-          command: sudo cat /etc/apt/sources.list &&m ls -l /etc/apt/sources.list.d/
+          command: sudo cat /etc/apt/sources.list && ls -l /etc/apt/sources.list.d/
       - run:
           name: install ansible apt-get repo
           command: sudo apt-add-repository --yes ppa:ansible/ansible=7.*
