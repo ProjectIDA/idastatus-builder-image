@@ -50,9 +50,10 @@ jobs:
             sudo cat /tmp/binary.list >> /etc/apt/sources.list.d/git-core-ubuntu-ppa-binary.list
       - run:
           name: debugging
-          command: cat /etc/apt/sources.list.d/git-core-ubuntu-ppa-jammy.list
-          command: cat /etc/apt/sources.list.d/git-core-ubuntu-ppa-focal.list
-          command: cat /etc/apt/sources.list.d/git-core-ubuntu-ppa-binary.list
+          command: |
+            cat /etc/apt/sources.list.d/git-core-ubuntu-ppa-jammy.list
+            cat /etc/apt/sources.list.d/git-core-ubuntu-ppa-focal.list
+            cat /etc/apt/sources.list.d/git-core-ubuntu-ppa-binary.list
       - run:
           name: apt-get update
           command: sudo apt-get update
