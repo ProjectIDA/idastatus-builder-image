@@ -45,10 +45,14 @@ jobs:
           name: add focal repo to sources.list
           command: |
             sudo echo "deb https://ppa.launchpadcontent.net/git-core/ppa/ubuntu/ focal main" >> /tmp/focal.list
-            sudo cat /tmp/focal.list >> /etc/apt/sources.list.d/git-core-ubuntu-ppa-jammy.list
+            sudo echo "deb https://ppa.launchpadcontent.net/git-core/ppa/ubuntu/ binary main" >> /tmp/binary.list
+            sudo cat /tmp/focal.list >> /etc/apt/sources.list.d/git-core-ubuntu-ppa-focal.list
+            sudo cat /tmp/binary.list >> /etc/apt/sources.list.d/git-core-ubuntu-ppa-binary.list
       - run:
           name: debugging
           command: cat /etc/apt/sources.list.d/git-core-ubuntu-ppa-jammy.list
+          command: cat /etc/apt/sources.list.d/git-core-ubuntu-ppa-focal.list
+          command: cat /etc/apt/sources.list.d/git-core-ubuntu-ppa-binary.list
       - run:
           name: apt-get update
           command: sudo apt-get update
