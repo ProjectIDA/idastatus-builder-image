@@ -33,6 +33,7 @@ jobs:
           name: check and set perms
           command: |
             whoami
+            echo $USER
             sudo ls -ld /etc
             sudo ls -ld /etc/apt
             sudo ls -ld /etc/apt/sources.list.d
