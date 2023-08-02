@@ -30,8 +30,11 @@ jobs:
           name: debugging
           command: cat /etc/apt/sources.list.d/git-core-ubuntu-ppa-jammy.list
       - run:
-          name: make 
-          command: sudo echo "deb https://ppa.launchpadcontent.net/git-core/ppa/ubuntu/ focal main" > /etc/apt/sources.list.d/git-core-ubuntu-ppa-focal.list
+          name: add focal repo to sources.list
+          command: sudo echo "deb https://ppa.launchpadcontent.net/git-core/ppa/ubuntu/ focal main" >> /etc/apt/sources.list.d/git-core-ubuntu-ppa-jammy.list
+      - run:
+          name: debugging
+          command: cat /etc/apt/sources.list.d/git-core-ubuntu-ppa-jammy.list
       - run:
           name: apt list ansible
           command: sudo apt list ansible
